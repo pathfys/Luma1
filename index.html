@@ -152,15 +152,23 @@
     }
 
     /* Надпись Luma Gift — белым цветом */
-    .logo-text {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: #ffffff;
-      -webkit-text-fill-color: #ffffff;
-      letter-spacing: -0.5px;
-      text-shadow: 0 0 20px rgba(255,255,255,0.3);
-    }
+   .logo-text {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  letter-spacing: -0.5px;
+  text-shadow:
+    0 0 20px rgba(255,255,255,0.3),
+    0 2px 4px rgba(0,0,0,0.8);
+}
+
+body.light .logo-text {
+  color: #1a1a1a;
+  -webkit-text-fill-color: #1a1a1a;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
 
     .welcome-card {
       width: calc(100% - 32px);
