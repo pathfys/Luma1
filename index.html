@@ -52,31 +52,30 @@
       position: relative;
     }
 
-   body::before {
-  content: '';
-  position: fixed;
-  top: -100%;
-  left: -100%;
-  width: 400%;
-  height: 400%;
-  z-index: 0;
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 50px 50px;
-  transform: perspective(500px) rotateX(45deg);
-  transform-origin: center center;
-  animation: waveGrid 6s ease-in-out infinite;
-  pointer-events: none;
-}
+    body::before {
+      content: '';
+      position: fixed;
+      top: -100%;
+      left: -100%;
+      width: 400%;
+      height: 400%;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 50px 50px;
+      transform: perspective(500px) rotateX(45deg);
+      transform-origin: center center;
+      animation: waveGrid 6s ease-in-out infinite;
+      pointer-events: none;
+    }
 
-@keyframes waveGrid {
-  0%   { transform: perspective(500px) rotateX(45deg) translateY(0px); }
-  50%  { transform: perspective(500px) rotateX(45deg) translateY(-50px); }
-  100% { transform: perspective(500px) rotateX(45deg) translateY(0px); }
-}
+    @keyframes waveGrid {
+      0%   { transform: perspective(500px) rotateX(45deg) translateY(0px); }
+      50%  { transform: perspective(500px) rotateX(45deg) translateY(-50px); }
+      100% { transform: perspective(500px) rotateX(45deg) translateY(0px); }
+    }
 
-    /* Все контентные блоки поверх canvas */
     .theme-toggle,
     .header,
     .welcome-card,
@@ -86,7 +85,6 @@
       z-index: 1;
     }
 
-    /* Кнопка темы */
     .theme-toggle {
       position: fixed;
       top: 14px;
@@ -105,9 +103,9 @@
       box-shadow: 0 4px 15px rgba(41,128,185,0.5);
       transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .theme-toggle:active { transform: scale(0.9); }
 
-    /* Header */
     .header {
       width: 100%;
       padding: 36px 24px 20px;
@@ -144,7 +142,6 @@
       letter-spacing: -0.5px;
     }
 
-    /* Welcome card */
     .welcome-card {
       width: calc(100% - 32px);
       background: var(--surface);
@@ -181,9 +178,9 @@
     }
 
     .welcome-card .highlight .row { font-size: 13px; }
+
     .link { color: var(--accent); text-decoration: none; }
 
-    /* Menu */
     .menu {
       width: calc(100% - 32px);
       display: flex;
@@ -218,21 +215,28 @@
       box-shadow: 0 4px 20px rgba(41,128,185,0.3);
     }
 
+    .btn-blue:hover { box-shadow: 0 6px 28px rgba(41,128,185,0.45); }
+
     .btn-red {
       background: linear-gradient(135deg, var(--red), #c0392b);
       color: #fff;
       box-shadow: 0 4px 20px rgba(231,76,60,0.25);
     }
 
+    .btn-red:hover { box-shadow: 0 6px 28px rgba(231,76,60,0.35); }
+
     .btn::after {
       content: '';
       position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
       background: rgba(255,255,255,0.06);
       opacity: 0;
       transition: opacity 0.2s;
     }
+
     .btn:active::after { opacity: 1; }
 
     .footer {
@@ -253,6 +257,7 @@
     .btn:nth-child(3) { animation: fadeUp 0.35s ease 0.25s both; }
     .btn:nth-child(4) { animation: fadeUp 0.35s ease 0.30s both; }
     .btn:nth-child(5) { animation: fadeUp 0.35s ease 0.35s both; }
+
   </style>
 </head>
 <body>
@@ -267,24 +272,49 @@
   </div>
 
   <div class="welcome-card">
-    <div class="row"><span class="emoji">👋</span> Вас приветствует <b>Luma Gift!</b></div>
-    <div class="highlight">
-      <div class="row"><span class="emoji">✨</span> <b>Luma Gift</b> – Сервис проверенный временем.</div>
-      <div class="row"><span class="emoji">🤖</span> Ключевые метрики, сделки автоматизированы.</div>
+    <div class="row">
+      <span class="emoji">👋</span>
+      Вас приветствует <b>Luma Gift!</b>
     </div>
-    <div class="row"><span class="emoji">💼</span> Поддержка 24/7 - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a></div>
-    <div class="row"><span class="emoji">🛡</span> Ваша безопасность — наша работа</div>
+    <div class="highlight">
+      <div class="row">
+        <span class="emoji">✨</span>
+        <b>Luma Gift</b> – Сервис проверенный временем.
+      </div>
+      <div class="row">
+        <span class="emoji">🤖</span>
+        Ключевые метрики, сделки автоматизированы.
+      </div>
+    </div>
+    <div class="row">
+      <span class="emoji">💼</span>
+      Поддержка 24/7 - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a>
+    </div>
+    <div class="row">
+      <span class="emoji">🛡</span>
+      Ваша безопасность — наша работа
+    </div>
   </div>
 
   <div class="menu">
-    <button class="btn btn-blue" onclick="send('bind_wallet')">Управление реквизитами</button>
-    <button class="btn btn-red"  onclick="send('create_deal')">Активация ордера</button>
-    <button class="btn btn-blue" onclick="send('choose_language')">Сменить язык / Change Language</button>
-    <button class="btn btn-blue" onclick="send('support')">Поддержка</button>
-    <button class="btn btn-blue" onclick="send('help')">Безопасность</button>
+    <button class="btn btn-blue" onclick="send('bind_wallet')">
+      Управление реквизитами
+    </button>
+    <button class="btn btn-red" onclick="send('create_deal')">
+      Активация ордера
+    </button>
+    <button class="btn btn-blue" onclick="send('choose_language')">
+      Сменить язык / Change Language
+    </button>
+    <button class="btn btn-blue" onclick="send('support')">
+      Поддержка
+    </button>
+    <button class="btn btn-blue" onclick="send('help')">
+      Безопасность
+    </button>
   </div>
 
-  <div class="footer">© 2024 Luma Gift · Безопасные сделки</div>
+  <div class="footer">© 2024 Luma Gift </div>
 
   <script>
     const tg = window.Telegram.WebApp;
@@ -306,115 +336,12 @@
         body.classList.add('light');
         btn.textContent = '☀️';
       }
-      initGrid(); // перерисовываем сетку с новым цветом
     }
 
     function send(action) {
       tg.sendData(JSON.stringify({ action }));
     }
-
-    // ===== 3D WAVE GRID =====
-    const canvas = document.getElementById('wave-canvas');
-    const ctx = canvas.getContext('2d');
-
-    const COLS = 16;
-    const ROWS = 24;
-    let points = [];
-    let animFrame;
-    let t = 0;
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function buildGrid() {
-      points = [];
-      for (let r = 0; r <= ROWS; r++) {
-        for (let c = 0; c <= COLS; c++) {
-          points.push({ r, c });
-        }
-      }
-    }
-
-    function project(x3d, y3d, z3d) {
-      const fov = 600;
-      const camZ = 300;
-      const scale = fov / (fov + z3d + camZ);
-      return {
-        x: canvas.width / 2 + x3d * scale,
-        y: canvas.height / 2 + y3d * scale,
-        scale
-      };
-    }
-
-    function getColor() {
-      return document.body.classList.contains('light')
-        ? 'rgba(41,128,185,0.22)'
-        : 'rgba(52,152,219,0.28)';
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const W = canvas.width * 1.4;
-      const H = canvas.height * 1.2;
-      const cellW = W / COLS;
-      const cellH = H / ROWS;
-      const offX = -W / 2;
-      const offY = -H / 2 - 80;
-
-      const color = getColor();
-
-      // Рисуем горизонтальные линии
-      for (let r = 0; r <= ROWS; r++) {
-        ctx.beginPath();
-        for (let c = 0; c <= COLS; c++) {
-          const x3d = offX + c * cellW;
-          const y3d = offY + r * cellH;
-          const wave = Math.sin(c * 0.4 + r * 0.3 + t) * 38
-                     + Math.sin(c * 0.2 - t * 0.7) * 22;
-          const z3d = wave;
-          const p = project(x3d, y3d, z3d);
-          if (c === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      }
-
-      // Рисуем вертикальные линии
-      for (let c = 0; c <= COLS; c++) {
-        ctx.beginPath();
-        for (let r = 0; r <= ROWS; r++) {
-          const x3d = offX + c * cellW;
-          const y3d = offY + r * cellH;
-          const wave = Math.sin(c * 0.4 + r * 0.3 + t) * 38
-                     + Math.sin(c * 0.2 - t * 0.7) * 22;
-          const z3d = wave;
-          const p = project(x3d, y3d, z3d);
-          if (r === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-      }
-
-      t += 0.018;
-      animFrame = requestAnimationFrame(draw);
-    }
-
-    function initGrid() {
-      cancelAnimationFrame(animFrame);
-      resize();
-      buildGrid();
-      draw();
-    }
-
-    window.addEventListener('resize', initGrid);
-    initGrid();
   </script>
+
 </body>
 </html>
