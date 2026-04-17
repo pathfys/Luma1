@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Laguna Gift</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1e1e1e;
+      --green: #2ecc71;
+      --green-dark: #27ae60;
+      --red: #e74c3c;
+      --red-dark: #c0392b;
+      --grey: #2a2a2a;
+      --grey-hover: #333;
+      --text: #f0f0f0;
+      --text-muted: #888;
+      --accent: #3498db;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 40px;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      width: 100%;
+      padding: 36px 24px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--green), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--green), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* Welcome card */
+    .welcome-card {
+      width: calc(100% - 32px);
+      background: var(--surface);
+      border: 1px solid #222;
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin: 0 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .welcome-card .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+    }
+
+    .welcome-card .row .emoji { font-size: 16px; flex-shrink: 0; }
+
+    .welcome-card .highlight {
+      background: rgba(46,204,113,0.08);
+      border-left: 3px solid var(--green);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .welcome-card .highlight .row { font-size: 13px; }
+
+    .link { color: var(--accent); text-decoration: none; }
+
+    /* Menu */
+    .menu {
+      width: calc(100% - 32px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: 0.2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active { transform: scale(0.97); opacity: 0.9; }
+
+    .btn-blue {
+      background: linear-gradient(135deg, #2980b9, #1a6fa3);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(41,128,185,0.3);
+    }
+    .btn-blue:hover { box-shadow: 0 6px 28px rgba(41,128,185,0.45); }
+
+    .btn-red {
+      background: linear-gradient(135deg, var(--red), #c0392b);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(231,76,60,0.25);
+    }
+    .btn-red:hover { box-shadow: 0 6px 28px rgba(231,76,60,0.35); }
+
+    .btn-grey {
+      background: var(--grey);
+      color: var(--text);
+      border: 1px solid #2e2e2e;
+    }
+    .btn-grey:hover { background: var(--grey-hover); }
+
+    .btn-icon { font-size: 18px; }
+
+    /* Badge */
+    .badge {
+      background: rgba(255,255,255,0.15);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Ripple */
+    .btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      background: rgba(255,255,255,0.06);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn:active::after { opacity: 1; }
+
+    /* Footer */
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* Animate in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .header       { animation: fadeUp 0.4s ease both; }
+    .welcome-card { animation: fadeUp 0.4s ease 0.1s both; }
+    .btn:nth-child(1) { animation: fadeUp 0.35s ease 0.15s both; }
+    .btn:nth-child(2) { animation: fadeUp 0.35s ease 0.20s both; }
+    .btn:nth-child(3) { animation: fadeUp 0.35s ease 0.25s both; }
+    .btn:nth-child(4) { animation: fadeUp 0.35s ease 0.30s both; }
+    .btn:nth-child(5) { animation: fadeUp 0.35s ease 0.35s both; }
+    .btn:nth-child(6) { animation: fadeUp 0.35s ease 0.40s both; }
+    .btn:nth-child(7) { animation: fadeUp 0.35s ease 0.45s both; }
+    .footer           { animation: fadeUp 0.35s ease 0.5s both; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-icon">💎</div>
+      <span class="logo-text">Luma Gift</span>
+    </div>
+  </div>
+
+  <div class="welcome-card">
+    <div class="row"><span class="emoji">👋</span> Вас приветствует <b>Luma Gift!</b></div>
+    <div class="highlight">
+      <div class="row"><span class="emoji">✨</span> <b>Luma Gift</b> – Сервис проверенный временем.</div>
+      <div class="row"><span class="emoji">🤖</span> Ключевые метрики, сделки автоматизированы.</div>
+    </div>
+    <div class="row"><span class="emoji">💼</span> Поддержка 24/7 - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a></div>
+    <div class="row"><span class="emoji">🛡</span> Ваша безопасность — наша работа</div>
+  </div>
+
+  <div class="menu">
+    <button class="btn btn-blue" onclick="send('requisites')">
+      Управление реквизитами
+    </button>
+
+    <button class="btn btn-red" onclick="send('activate_order')">
+      Активация ордера
+    </button>
+
+    <button class="btn btn-blue" onclick="send('language')">
+      Сменить язык / Change Language
+    </button>
+
+    <button class="btn btn-blue" onclick="send('support')">
+      Поддержка
+    </button>
+
+    <button class="btn btn-blue" onclick="send('security')">
+      Безопасность
+    </button>
+  </div>
+
+  <div class="footer">© 2024 Luma Gift · Безопасные сделки</div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    // Применяем тему Telegram если доступна
+    if (tg.colorScheme === 'light') {
+      document.documentElement.style.setProperty('--bg', '#f5f5f5');
+      document.documentElement.style.setProperty('--surface', '#ffffff');
+      document.documentElement.style.setProperty('--text', '#1a1a1a');
+      document.documentElement.style.setProperty('--text-muted', '#666');
+      document.documentElement.style.setProperty('--grey', '#e8e8e8');
+    }
+
+   function send(action) {
+  // Для Menu Button используем этот способ:
+  tg.sendData(JSON.stringify({ action }));
+  // Если бот не получает — используй window.location или закрывай апп:
+  // tg.close();
+}
+  </script>
+</body>
+</html>
