@@ -12,9 +12,7 @@
       --surface: #161616;
       --surface2: #1e1e1e;
       --green: #2ecc71;
-      --green-dark: #27ae60;
       --red: #e74c3c;
-      --red-dark: #c0392b;
       --grey: #2a2a2a;
       --grey-hover: #333;
       --text: #f0f0f0;
@@ -23,18 +21,19 @@
       --highlight-bg: rgba(46,204,113,0.08);
       --highlight-border: #2ecc71;
       --card-border: #222;
+      --grid-color: rgba(52,152,219,0.25);
     }
 
     body.light {
-      --bg: #f2f2f7;
+      --bg: #e8f0fe;
       --surface: #ffffff;
-      --surface2: #e8e8ed;
+      --surface2: #e0e0e5;
       --grey: #e0e0e5;
-      --grey-hover: #d0d0d5;
       --text: #1a1a1a;
       --text-muted: #666;
       --highlight-bg: rgba(46,204,113,0.1);
       --card-border: #ddd;
+      --grid-color: rgba(41,128,185,0.2);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -50,31 +49,50 @@
       padding: 0 0 40px;
       overflow-x: hidden;
       transition: background 0.3s, color 0.3s;
+      position: relative;
     }
 
-  .theme-toggle {
-  position: fixed;
-  top: 14px;
-  right: 14px;
-  background: linear-gradient(135deg, #2980b9, #1a6fa3);
-  border: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(41,128,185,0.5);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+    /* ===== 3D WAVE GRID ===== */
+    #wave-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-.theme-toggle:active {
-  transform: scale(0.9);
-  box-shadow: 0 2px 8px rgba(41,128,185,0.3);
-}
+    /* Все контентные блоки поверх canvas */
+    .theme-toggle,
+    .header,
+    .welcome-card,
+    .menu,
+    .footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Кнопка темы */
+    .theme-toggle {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      background: linear-gradient(135deg, #2980b9, #1a6fa3);
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(41,128,185,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .theme-toggle:active { transform: scale(0.9); }
 
     /* Header */
     .header {
@@ -126,6 +144,7 @@
       gap: 8px;
       animation: fadeUp 0.4s ease 0.1s both;
       transition: background 0.3s, border-color 0.3s;
+      backdrop-filter: blur(10px);
     }
 
     .welcome-card .row {
@@ -173,7 +192,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       letter-spacing: 0.2px;
       position: relative;
       overflow: hidden;
@@ -186,20 +204,17 @@
       color: #fff;
       box-shadow: 0 4px 20px rgba(41,128,185,0.3);
     }
-    .btn-blue:hover { box-shadow: 0 6px 28px rgba(41,128,185,0.45); }
 
     .btn-red {
       background: linear-gradient(135deg, var(--red), #c0392b);
       color: #fff;
       box-shadow: 0 4px 20px rgba(231,76,60,0.25);
     }
-    .btn-red:hover { box-shadow: 0 6px 28px rgba(231,76,60,0.35); }
 
     .btn::after {
       content: '';
       position: absolute;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       top: 0; left: 0;
       background: rgba(255,255,255,0.06);
       opacity: 0;
@@ -207,7 +222,6 @@
     }
     .btn:active::after { opacity: 1; }
 
-    /* Footer */
     .footer {
       margin-top: 28px;
       text-align: center;
@@ -229,6 +243,8 @@
   </style>
 </head>
 <body>
+
+  <canvas id="wave-canvas"></canvas>
 
   <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
 
@@ -264,7 +280,6 @@
     tg.ready();
     tg.expand();
 
-    // Автоматически применяем тему Telegram
     if (tg.colorScheme === 'light') {
       document.body.classList.add('light');
       document.getElementById('themeBtn').textContent = '☀️';
@@ -280,11 +295,115 @@
         body.classList.add('light');
         btn.textContent = '☀️';
       }
+      initGrid(); // перерисовываем сетку с новым цветом
     }
 
     function send(action) {
       tg.sendData(JSON.stringify({ action }));
     }
+
+    // ===== 3D WAVE GRID =====
+    const canvas = document.getElementById('wave-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const COLS = 16;
+    const ROWS = 24;
+    let points = [];
+    let animFrame;
+    let t = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function buildGrid() {
+      points = [];
+      for (let r = 0; r <= ROWS; r++) {
+        for (let c = 0; c <= COLS; c++) {
+          points.push({ r, c });
+        }
+      }
+    }
+
+    function project(x3d, y3d, z3d) {
+      const fov = 600;
+      const camZ = 300;
+      const scale = fov / (fov + z3d + camZ);
+      return {
+        x: canvas.width / 2 + x3d * scale,
+        y: canvas.height / 2 + y3d * scale,
+        scale
+      };
+    }
+
+    function getColor() {
+      return document.body.classList.contains('light')
+        ? 'rgba(41,128,185,0.22)'
+        : 'rgba(52,152,219,0.28)';
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const W = canvas.width * 1.4;
+      const H = canvas.height * 1.2;
+      const cellW = W / COLS;
+      const cellH = H / ROWS;
+      const offX = -W / 2;
+      const offY = -H / 2 - 80;
+
+      const color = getColor();
+
+      // Рисуем горизонтальные линии
+      for (let r = 0; r <= ROWS; r++) {
+        ctx.beginPath();
+        for (let c = 0; c <= COLS; c++) {
+          const x3d = offX + c * cellW;
+          const y3d = offY + r * cellH;
+          const wave = Math.sin(c * 0.4 + r * 0.3 + t) * 38
+                     + Math.sin(c * 0.2 - t * 0.7) * 22;
+          const z3d = wave;
+          const p = project(x3d, y3d, z3d);
+          if (c === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      // Рисуем вертикальные линии
+      for (let c = 0; c <= COLS; c++) {
+        ctx.beginPath();
+        for (let r = 0; r <= ROWS; r++) {
+          const x3d = offX + c * cellW;
+          const y3d = offY + r * cellH;
+          const wave = Math.sin(c * 0.4 + r * 0.3 + t) * 38
+                     + Math.sin(c * 0.2 - t * 0.7) * 22;
+          const z3d = wave;
+          const p = project(x3d, y3d, z3d);
+          if (r === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
+      t += 0.018;
+      animFrame = requestAnimationFrame(draw);
+    }
+
+    function initGrid() {
+      cancelAnimationFrame(animFrame);
+      resize();
+      buildGrid();
+      draw();
+    }
+
+    window.addEventListener('resize', initGrid);
+    initGrid();
   </script>
 </body>
 </html>
