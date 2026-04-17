@@ -288,6 +288,14 @@
       backdrop-filter: blur(12px);
       transition: background 0.3s;
     }
+    .nav-circle svg {
+  color: var(--text-muted); /* серый по умолчанию */
+  transition: color 0.2s;
+}
+
+.nav-item.active .nav-circle svg {
+  color: #3498db; /* синий для активной */
+}
 
     .nav-item {
       display: flex;
@@ -400,19 +408,36 @@
 
   <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="navClick(this, 'profile')">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label">Профиль</span>
-    </button>
-    <button class="nav-item" onclick="navClick(this, 'history')">
-      <span class="nav-icon">📋</span>
-      <span class="nav-label">История</span>
-    </button>
-    <button class="nav-item" onclick="navClick(this, 'top')">
-      <span class="nav-icon">🏆</span>
-      <span class="nav-label">Топ</span>
-    </button>
-  </nav>
+  <button class="nav-item active" onclick="navClick(this, 'profile')">
+    <div class="nav-circle">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <span class="nav-label">Профиль</span>
+  </button>
+  <button class="nav-item" onclick="navClick(this, 'history')">
+    <div class="nav-circle">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="3" width="14" height="18" rx="2"/>
+        <line x1="9" y1="8" x2="15" y2="8"/>
+        <line x1="9" y1="12" x2="15" y2="12"/>
+        <line x1="9" y1="16" x2="13" y2="16"/>
+      </svg>
+    </div>
+    <span class="nav-label">История</span>
+  </button>
+  <button class="nav-item" onclick="navClick(this, 'top')">
+    <div class="nav-circle">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 20v-6M12 20V10M18 20V4"/>
+        <path d="M3 20h18"/>
+      </svg>
+    </div>
+    <span class="nav-label">Топ</span>
+  </button>
+</nav>
 
   <script>
     const tg = window.Telegram.WebApp;
