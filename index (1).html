@@ -274,10 +274,12 @@
       document.documentElement.style.setProperty('--grey', '#e8e8e8');
     }
 
-    function send(action) {
-      // Отправляем данные обратно в бот
-      tg.sendData(JSON.stringify({ action }));
-    }
+   function send(action) {
+  // Для Menu Button используем этот способ:
+  tg.sendData(JSON.stringify({ action }));
+  // Если бот не получает — используй window.location или закрывай апп:
+  // tg.close();
+}
   </script>
 </body>
 </html>
