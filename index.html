@@ -551,8 +551,19 @@
       <span class="nav-label">Профиль</span>
     </button>
 
+    <!-- Главная -->
+    <button class="nav-item active" id="navHome" onclick="navClick(this, 'home')">
+      <div class="nav-circle">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12L12 4l9 8"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </div>
+      <span class="nav-label">Главная</span>
+    </button>
+
     <!-- История -->
-    <button class="nav-item active" id="navHistory" onclick="navClick(this, 'history')">
+    <button class="nav-item" id="navHistory" onclick="navClick(this, 'history')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="3" width="16" height="18" rx="2"/>
@@ -628,6 +639,9 @@
       if (action === 'profile') {
         main.style.display = 'none';
         profile.classList.add('visible');
+      } else if (action === 'home') {
+        profile.classList.remove('visible');
+        main.style.display = 'flex';
       } else {
         profile.classList.remove('visible');
         main.style.display = 'flex';
