@@ -21,7 +21,7 @@
       --highlight-bg: rgba(46,204,113,0.08);
       --highlight-border: #2ecc71;
       --card-border: #222;
-      --grid-color: rgba(52,152,219,0.25);
+      --grid-color: rgba(52,152,219,0.18);
     }
 
     body.light {
@@ -33,7 +33,7 @@
       --text-muted: #666;
       --highlight-bg: rgba(46,204,113,0.1);
       --card-border: #ddd;
-      --grid-color: rgba(41,128,185,0.2);
+      --grid-color: rgba(41,128,185,0.15);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -52,28 +52,27 @@
       position: relative;
     }
 
+    /* ===== СЕТКА ПРЯМО ЗА КОНТЕНТОМ ===== */
     body::before {
       content: '';
       position: fixed;
-      top: -100%;
-      left: -100%;
-      width: 400%;
-      height: 400%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
       background-image:
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-      background-size: 50px 50px;
-      transform: perspective(500px) rotateX(45deg);
-      transform-origin: center center;
-      animation: waveGrid 6s ease-in-out infinite;
+      background-size: 40px 40px;
       pointer-events: none;
+      animation: waveGrid 6s ease-in-out infinite;
     }
 
     @keyframes waveGrid {
-      0%   { transform: perspective(500px) rotateX(45deg) translateY(0px); }
-      50%  { transform: perspective(500px) rotateX(45deg) translateY(-50px); }
-      100% { transform: perspective(500px) rotateX(45deg) translateY(0px); }
+      0%   { background-position: 0 0; }
+      50%  { background-position: 0 20px; }
+      100% { background-position: 0 0; }
     }
 
     .theme-toggle,
@@ -120,26 +119,47 @@
       margin-bottom: 6px;
     }
 
+    /* Знак TON — голубой с свечением */
     .logo-icon {
       width: 38px;
       height: 38px;
-      background: linear-gradient(135deg, var(--green), var(--accent));
+      background: linear-gradient(135deg, #3bc6f5, #2980b9);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      box-shadow:
+        0 0 12px rgba(59,198,245,0.7),
+        0 0 28px rgba(59,198,245,0.4),
+        0 0 50px rgba(59,198,245,0.2);
+      animation: tonGlow 2.5s ease-in-out infinite;
     }
 
+    @keyframes tonGlow {
+      0%, 100% {
+        box-shadow:
+          0 0 12px rgba(59,198,245,0.7),
+          0 0 28px rgba(59,198,245,0.4),
+          0 0 50px rgba(59,198,245,0.2);
+      }
+      50% {
+        box-shadow:
+          0 0 20px rgba(59,198,245,0.9),
+          0 0 45px rgba(59,198,245,0.6),
+          0 0 80px rgba(59,198,245,0.3);
+      }
+    }
+
+    /* Надпись Luma Gift — белым цветом */
     .logo-text {
       font-family: 'Unbounded', sans-serif;
       font-size: 22px;
       font-weight: 900;
-      background: linear-gradient(90deg, var(--green), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #ffffff;
+      -webkit-text-fill-color: #ffffff;
       letter-spacing: -0.5px;
+      text-shadow: 0 0 20px rgba(255,255,255,0.3);
     }
 
     .welcome-card {
@@ -314,7 +334,7 @@
     </button>
   </div>
 
-  <div class="footer">© 2024 Luma Gift </div>
+  <div class="footer">© 2024 Luma Gift · Безопасные сделки</div>
 
   <script>
     const tg = window.Telegram.WebApp;
