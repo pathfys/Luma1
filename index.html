@@ -612,22 +612,34 @@
     </div>
 
     <div class="profile-card">
-      <div class="profile-row">
-        <span class="row-label"><span class="emoji">👤</span> <span id="txt-prof-username"></span></span>
-        <span class="row-value" id="cardUsername">—</span>
-      </div>
-      <div class="profile-row">
-        <span class="row-label"><span class="emoji">🌐</span> <span id="txt-prof-lang"></span></span>
-        <span class="row-value">—</span>
-      </div>
-      <div class="profile-row">
-        <span class="row-label"><span class="emoji">🔒</span> <span id="txt-prof-status"></span></span>
-        <span class="row-value">—</span>
-      </div>
-      <div class="profile-row">
-        <span class="row-label"><span class="emoji">💎</span> <span id="txt-prof-deals"></span></span>
-        <span class="row-value">—</span>
-      </div>
+     <div class="profile-row">
+  <span class="row-label">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+    <span id="txt-prof-username"></span>
+  </span>
+  <span class="row-value" id="cardUsername">—</span>
+</div>
+<div class="profile-row">
+  <span class="row-label">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+    <span id="txt-prof-lang"></span>
+  </span>
+  <span class="row-value" id="cardLang">—</span>
+</div>
+<div class="profile-row">
+  <span class="row-label">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    <span id="txt-prof-status"></span>
+  </span>
+  <span class="row-value">—</span>
+</div>
+<div class="profile-row">
+  <span class="row-label">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span id="txt-prof-deals"></span>
+  </span>
+  <span class="row-value">—</span>
+</div>
     </div>
 
     <div class="footer" id="txt-footer-profile" style="margin-top:8px;"></div>
@@ -795,12 +807,17 @@
     applyLang('ru');
 
     /* ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ===== */
-    const user = tg.initDataUnsafe?.user || {};
-    const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || '—';
+   const user = tg.initDataUnsafe?.user || {};
+const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || '—';
 
-    document.getElementById('profileName').textContent  = fullName;
-    document.getElementById('profileId').textContent    = user.id || '—';
-    document.getElementById('cardUsername').textContent = user.username ? '@' + user.username : '—';
+document.getElementById('profileName').textContent  = fullName;
+document.getElementById('profileId').textContent    = user.id || '—';
+document.getElementById('cardUsername').textContent = user.username ? '@' + user.username : '—';
+
+// Язык из Telegram
+const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '🇺🇦 Українська', es: '🇪🇸 Español' };
+const userLang = user.language_code || 'en';
+document.getElementById('cardLang').textContent = langMap[userLang] || userLang.toUpperCase();
 
     if (user.photo_url) {
       const img = document.createElement('img');
@@ -826,17 +843,20 @@
       document.getElementById('langDropdown').classList.toggle('open', dropdownOpen);
     }
 
-    function selectLang(code, flag, label, el) {
-      currentLang = code;
-      document.getElementById('langBtnText').textContent = flag + ' ' + label;
-      document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
-      el.classList.add('selected');
-      dropdownOpen = false;
-      document.getElementById('langBtn').classList.remove('open');
-      document.getElementById('langDropdown').classList.remove('open');
-      applyLang(code);
-      send('set_language:' + code);
-    }
+   function selectLang(code, flag, label, el) {
+  currentLang = code;
+  document.getElementById('langBtnText').textContent = flag + ' ' + label;
+  document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  dropdownOpen = false;
+  document.getElementById('langBtn').classList.remove('open');
+  document.getElementById('langDropdown').classList.remove('open');
+  applyLang(code);
+  // Обновляем язык в профиле при ручной смене
+  const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '🇺🇦 Українська', es: '🇪🇸 Español' };
+  document.getElementById('cardLang').textContent = langMap[code] || code.toUpperCase();
+  send('set_language:' + code);
+}
 
     document.addEventListener('click', function(e) {
       if (!document.getElementById('langToggle').contains(e.target)) {
