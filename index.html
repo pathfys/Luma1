@@ -76,8 +76,8 @@
       100% { background-position: 0 0; }
     }
 
-    .theme-toggle,
     .top-controls,
+    .theme-toggle,
     .header,
     .welcome-card,
     .menu,
@@ -95,7 +95,7 @@
       right: 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       z-index: 999;
     }
 
@@ -107,27 +107,27 @@
     .lang-btn {
       background: linear-gradient(135deg, #2980b9, #1a6fa3);
       border: none;
-      border-radius: 21px;
-      height: 42px;
-      padding: 0 14px;
+      border-radius: 18px;
+      height: 34px;
+      padding: 0 10px;
       font-family: 'Inter', sans-serif;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
       color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
-      box-shadow: 0 4px 15px rgba(41,128,185,0.5);
+      gap: 4px;
+      box-shadow: 0 3px 10px rgba(41,128,185,0.45);
       transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       white-space: nowrap;
     }
 
     .lang-btn:active { transform: scale(0.9); }
 
     .lang-btn .arrow {
-      font-size: 9px;
+      font-size: 8px;
       transition: transform 0.2s;
       display: inline-block;
     }
@@ -183,15 +183,15 @@
       background: linear-gradient(135deg, #2980b9, #1a6fa3);
       border: none;
       border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      font-size: 20px;
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
       cursor: pointer;
       z-index: 999;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 15px rgba(41,128,185,0.5);
+      box-shadow: 0 3px 10px rgba(41,128,185,0.45);
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -545,30 +545,27 @@
 
   <!-- ВЕРХНИЕ КНОПКИ: ЯЗЫК + ТЕМА -->
   <div class="top-controls">
-
     <div class="lang-toggle" id="langToggle">
       <button class="lang-btn" id="langBtn" onclick="toggleLang()">
-        <span id="langBtnText">🇬🇧 EN</span>
+        <span id="langBtnText">🇷🇺 RU</span>
         <span class="arrow">▼</span>
       </button>
       <div class="lang-dropdown" id="langDropdown">
-        <button class="lang-option" onclick="selectLang('ru', '🇷🇺', 'RU')">
+        <button class="lang-option selected" onclick="selectLang('ru', '🇷🇺', 'RU', this)">
           <span class="flag">🇷🇺</span> Русский
         </button>
-        <button class="lang-option" onclick="selectLang('en', '🇬🇧', 'EN')">
+        <button class="lang-option" onclick="selectLang('en', '🇬🇧', 'EN', this)">
           <span class="flag">🇬🇧</span> English
         </button>
-        <button class="lang-option" onclick="selectLang('uk', '🇺🇦', 'UA')">
+        <button class="lang-option" onclick="selectLang('uk', '🇺🇦', 'UA', this)">
           <span class="flag">🇺🇦</span> Українська
         </button>
-        <button class="lang-option" onclick="selectLang('es', '🇪🇸', 'ES')">
+        <button class="lang-option" onclick="selectLang('es', '🇪🇸', 'ES', this)">
           <span class="flag">🇪🇸</span> Español
         </button>
       </div>
     </div>
-
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-
   </div>
 
   <div class="header">
@@ -584,36 +581,36 @@
     <div class="welcome-card">
       <div class="row">
         <span class="emoji">👋</span>
-        Вас приветствует <b>Luma Gift!</b>
+        <span id="txt-welcome"></span>
       </div>
       <div class="highlight">
         <div class="row">
           <span class="emoji">✨</span>
-          <b>Luma Gift</b> – Сервис проверенный временем.
+          <span id="txt-slogan1"></span>
         </div>
         <div class="row">
           <span class="emoji">🤖</span>
-          Ключевые метрики, сделки автоматизированы.
+          <span id="txt-slogan2"></span>
         </div>
       </div>
       <div class="row">
         <span class="emoji">💼</span>
-        Поддержка 24/7 - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a>
+        <span id="txt-support"></span> - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a>
       </div>
       <div class="row">
         <span class="emoji">🛡</span>
-        Ваша безопасность — наша работа
+        <span id="txt-safety"></span>
       </div>
     </div>
 
     <div class="menu">
-      <button class="btn btn-blue" onclick="send('bind_wallet')">Управление реквизитами</button>
-      <button class="btn btn-red"  onclick="send('create_deal')">Активация ордера</button>
-      <button class="btn btn-blue" onclick="send('support')">Поддержка</button>
-      <button class="btn btn-blue" onclick="send('help')">Безопасность</button>
+      <button class="btn btn-blue" onclick="send('bind_wallet')" id="btn-wallet"></button>
+      <button class="btn btn-red"  onclick="send('create_deal')" id="btn-deal"></button>
+      <button class="btn btn-blue" onclick="send('support')"     id="btn-support"></button>
+      <button class="btn btn-blue" onclick="send('help')"        id="btn-help"></button>
     </div>
 
-    <div class="footer">© 2024 Luma Gift · Безопасные сделки</div>
+    <div class="footer" id="txt-footer"></div>
 
   </div>
 
@@ -633,31 +630,29 @@
 
     <div class="profile-card">
       <div class="profile-row">
-        <span class="row-label"><span class="emoji">👤</span> Имя пользователя</span>
+        <span class="row-label"><span class="emoji">👤</span> <span id="txt-prof-username"></span></span>
         <span class="row-value" id="cardUsername">—</span>
       </div>
       <div class="profile-row">
-        <span class="row-label"><span class="emoji">🌐</span> Язык</span>
+        <span class="row-label"><span class="emoji">🌐</span> <span id="txt-prof-lang"></span></span>
         <span class="row-value">—</span>
       </div>
       <div class="profile-row">
-        <span class="row-label"><span class="emoji">🔒</span> Статус</span>
+        <span class="row-label"><span class="emoji">🔒</span> <span id="txt-prof-status"></span></span>
         <span class="row-value">—</span>
       </div>
       <div class="profile-row">
-        <span class="row-label"><span class="emoji">💎</span> Сделок</span>
+        <span class="row-label"><span class="emoji">💎</span> <span id="txt-prof-deals"></span></span>
         <span class="row-value">—</span>
       </div>
     </div>
 
-    <div class="footer" style="margin-top:8px;">© 2024 Luma Gift · Безопасные сделки</div>
+    <div class="footer" id="txt-footer-profile" style="margin-top:8px;"></div>
 
   </div>
 
   <!-- НИЖНЯЯ НАВИГАЦИЯ -->
   <nav class="bottom-nav">
-
-    <!-- Профиль -->
     <button class="nav-item" id="navProfile" onclick="navClick(this, 'profile')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -665,10 +660,9 @@
           <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
         </svg>
       </div>
-      <span class="nav-label">Профиль</span>
+      <span class="nav-label" id="nav-profile-label"></span>
     </button>
 
-    <!-- Главная -->
     <button class="nav-item active" id="navHome" onclick="navClick(this, 'home')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -676,10 +670,9 @@
           <path d="M9 21V12h6v9"/>
         </svg>
       </div>
-      <span class="nav-label">Главная</span>
+      <span class="nav-label" id="nav-home-label"></span>
     </button>
 
-    <!-- История -->
     <button class="nav-item" id="navHistory" onclick="navClick(this, 'history')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -689,10 +682,9 @@
           <line x1="8" y1="16" x2="13" y2="16"/>
         </svg>
       </div>
-      <span class="nav-label">История</span>
+      <span class="nav-label" id="nav-history-label"></span>
     </button>
 
-    <!-- Топ -->
     <button class="nav-item" id="navTop" onclick="navClick(this, 'top')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -701,9 +693,8 @@
           <rect x="17" y="5" width="5" height="16" rx="1"/>
         </svg>
       </div>
-      <span class="nav-label">Топ</span>
+      <span class="nav-label" id="nav-top-label"></span>
     </button>
-
   </nav>
 
   <script>
@@ -715,6 +706,116 @@
       document.body.classList.add('light');
       document.getElementById('themeBtn').textContent = '☀️';
     }
+
+    /* ===== ПЕРЕВОДЫ ===== */
+    const i18n = {
+      ru: {
+        welcome:      'Вас приветствует <b>Luma Gift!</b>',
+        slogan1:      '<b>Luma Gift</b> – Сервис проверенный временем.',
+        slogan2:      'Ключевые метрики, сделки автоматизированы.',
+        support:      'Поддержка 24/7',
+        safety:       'Ваша безопасность — наша работа',
+        btnWallet:    'Управление реквизитами',
+        btnDeal:      'Активация ордера',
+        btnSupport:   'Поддержка',
+        btnHelp:      'Безопасность',
+        footer:       '© 2024 Luma Gift · Безопасные сделки',
+        navProfile:   'Профиль',
+        navHome:      'Главная',
+        navHistory:   'История',
+        navTop:       'Топ',
+        profUsername: 'Имя пользователя',
+        profLang:     'Язык',
+        profStatus:   'Статус',
+        profDeals:    'Сделок',
+      },
+      en: {
+        welcome:      'Welcome to <b>Luma Gift!</b>',
+        slogan1:      '<b>Luma Gift</b> – A time-tested service.',
+        slogan2:      'Key metrics and deals are automated.',
+        support:      'Support 24/7',
+        safety:       'Your security is our job',
+        btnWallet:    'Manage Requisites',
+        btnDeal:      'Activate Order',
+        btnSupport:   'Support',
+        btnHelp:      'Security',
+        footer:       '© 2024 Luma Gift · Secure Deals',
+        navProfile:   'Profile',
+        navHome:      'Home',
+        navHistory:   'History',
+        navTop:       'Top',
+        profUsername: 'Username',
+        profLang:     'Language',
+        profStatus:   'Status',
+        profDeals:    'Deals',
+      },
+      uk: {
+        welcome:      'Вас вітає <b>Luma Gift!</b>',
+        slogan1:      '<b>Luma Gift</b> – Сервіс перевірений часом.',
+        slogan2:      'Ключові метрики, угоди автоматизовані.',
+        support:      'Підтримка 24/7',
+        safety:       'Ваша безпека — наша робота',
+        btnWallet:    'Управління реквізитами',
+        btnDeal:      'Активація ордера',
+        btnSupport:   'Підтримка',
+        btnHelp:      'Безпека',
+        footer:       '© 2024 Luma Gift · Безпечні угоди',
+        navProfile:   'Профіль',
+        navHome:      'Головна',
+        navHistory:   'Історія',
+        navTop:       'Топ',
+        profUsername: 'Ім\'я користувача',
+        profLang:     'Мова',
+        profStatus:   'Статус',
+        profDeals:    'Угод',
+      },
+      es: {
+        welcome:      '¡Bienvenido a <b>Luma Gift!</b>',
+        slogan1:      '<b>Luma Gift</b> – Un servicio probado en el tiempo.',
+        slogan2:      'Métricas clave y tratos automatizados.',
+        support:      'Soporte 24/7',
+        safety:       'Tu seguridad es nuestro trabajo',
+        btnWallet:    'Gestionar Requisitos',
+        btnDeal:      'Activar Orden',
+        btnSupport:   'Soporte',
+        btnHelp:      'Seguridad',
+        footer:       '© 2024 Luma Gift · Tratos Seguros',
+        navProfile:   'Perfil',
+        navHome:      'Inicio',
+        navHistory:   'Historial',
+        navTop:       'Top',
+        profUsername: 'Nombre de usuario',
+        profLang:     'Idioma',
+        profStatus:   'Estado',
+        profDeals:    'Tratos',
+      },
+    };
+
+    function applyLang(code) {
+      const t = i18n[code];
+      document.getElementById('txt-welcome').innerHTML   = t.welcome;
+      document.getElementById('txt-slogan1').innerHTML   = t.slogan1;
+      document.getElementById('txt-slogan2').textContent = t.slogan2;
+      document.getElementById('txt-support').textContent = t.support;
+      document.getElementById('txt-safety').textContent  = t.safety;
+      document.getElementById('btn-wallet').textContent  = t.btnWallet;
+      document.getElementById('btn-deal').textContent    = t.btnDeal;
+      document.getElementById('btn-support').textContent = t.btnSupport;
+      document.getElementById('btn-help').textContent    = t.btnHelp;
+      document.getElementById('txt-footer').textContent          = t.footer;
+      document.getElementById('txt-footer-profile').textContent  = t.footer;
+      document.getElementById('nav-profile-label').textContent   = t.navProfile;
+      document.getElementById('nav-home-label').textContent      = t.navHome;
+      document.getElementById('nav-history-label').textContent   = t.navHistory;
+      document.getElementById('nav-top-label').textContent       = t.navTop;
+      document.getElementById('txt-prof-username').textContent   = t.profUsername;
+      document.getElementById('txt-prof-lang').textContent       = t.profLang;
+      document.getElementById('txt-prof-status').textContent     = t.profStatus;
+      document.getElementById('txt-prof-deals').textContent      = t.profDeals;
+    }
+
+    /* Применить язык по умолчанию */
+    applyLang('ru');
 
     /* ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ===== */
     const user = tg.initDataUnsafe?.user || {};
@@ -748,25 +849,24 @@
     }
 
     /* ===== ЯЗЫК ===== */
-    let currentLang = 'en';
+    let currentLang = 'ru';
     let dropdownOpen = false;
 
     function toggleLang() {
       dropdownOpen = !dropdownOpen;
-      const btn      = document.getElementById('langBtn');
-      const dropdown = document.getElementById('langDropdown');
-      btn.classList.toggle('open', dropdownOpen);
-      dropdown.classList.toggle('open', dropdownOpen);
+      document.getElementById('langBtn').classList.toggle('open', dropdownOpen);
+      document.getElementById('langDropdown').classList.toggle('open', dropdownOpen);
     }
 
-    function selectLang(code, flag, label) {
+    function selectLang(code, flag, label, el) {
       currentLang = code;
       document.getElementById('langBtnText').textContent = flag + ' ' + label;
-      document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
+      document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
       dropdownOpen = false;
       document.getElementById('langBtn').classList.remove('open');
       document.getElementById('langDropdown').classList.remove('open');
+      applyLang(code);
       send('set_language:' + code);
     }
 
