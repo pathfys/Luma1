@@ -77,6 +77,7 @@
     }
 
     .theme-toggle,
+    .top-controls,
     .header,
     .welcome-card,
     .menu,
@@ -87,13 +88,103 @@
       z-index: 1;
     }
 
-    .theme-toggle {
+    /* ===== ВЕРХНИЕ КНОПКИ ===== */
+    .top-controls {
       position: fixed;
-      top: 14px; right: 14px;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 999;
+    }
+
+    /* ===== КНОПКА ЯЗЫКА ===== */
+    .lang-toggle {
+      position: relative;
+    }
+
+    .lang-btn {
+      background: linear-gradient(135deg, #2980b9, #1a6fa3);
+      border: none;
+      border-radius: 21px;
+      height: 42px;
+      padding: 0 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(41,128,185,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .lang-btn:active { transform: scale(0.9); }
+
+    .lang-btn .arrow {
+      font-size: 9px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    .lang-btn.open .arrow { transform: rotate(180deg); }
+
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      min-width: 160px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .lang-dropdown.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .lang-option:hover { background: var(--grey); }
+    .lang-option:active { background: var(--grey-hover); }
+    .lang-option .flag { font-size: 18px; }
+    .lang-option.selected { color: var(--accent); }
+    .lang-option + .lang-option { border-top: 1px solid var(--card-border); }
+
+    /* ===== КНОПКА ТЕМЫ ===== */
+    .theme-toggle {
       background: linear-gradient(135deg, #2980b9, #1a6fa3);
       border: none;
       border-radius: 50%;
-      width: 42px; height: 42px;
+      width: 42px;
+      height: 42px;
       font-size: 20px;
       cursor: pointer;
       z-index: 999;
@@ -447,11 +538,38 @@
 
     .profile-row .row-label .emoji { font-size: 15px; }
     .profile-row .row-value { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+
   </style>
 </head>
 <body>
 
-  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+  <!-- ВЕРХНИЕ КНОПКИ: ЯЗЫК + ТЕМА -->
+  <div class="top-controls">
+
+    <div class="lang-toggle" id="langToggle">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">
+        <span id="langBtnText">🇬🇧 EN</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option" onclick="selectLang('ru', '🇷🇺', 'RU')">
+          <span class="flag">🇷🇺</span> Русский
+        </button>
+        <button class="lang-option" onclick="selectLang('en', '🇬🇧', 'EN')">
+          <span class="flag">🇬🇧</span> English
+        </button>
+        <button class="lang-option" onclick="selectLang('uk', '🇺🇦', 'UA')">
+          <span class="flag">🇺🇦</span> Українська
+        </button>
+        <button class="lang-option" onclick="selectLang('es', '🇪🇸', 'ES')">
+          <span class="flag">🇪🇸</span> Español
+        </button>
+      </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+
+  </div>
 
   <div class="header">
     <div class="logo-wrap">
@@ -491,7 +609,6 @@
     <div class="menu">
       <button class="btn btn-blue" onclick="send('bind_wallet')">Управление реквизитами</button>
       <button class="btn btn-red"  onclick="send('create_deal')">Активация ордера</button>
-      <button class="btn btn-blue" onclick="send('choose_language')">Сменить язык / Change Language</button>
       <button class="btn btn-blue" onclick="send('support')">Поддержка</button>
       <button class="btn btn-blue" onclick="send('help')">Безопасность</button>
     </div>
@@ -599,7 +716,7 @@
       document.getElementById('themeBtn').textContent = '☀️';
     }
 
-    /* Данные пользователя из Telegram */
+    /* ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ===== */
     const user = tg.initDataUnsafe?.user || {};
     const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || '—';
     const userId   = user.id || '—';
@@ -617,6 +734,7 @@
       document.getElementById('avatarInner').appendChild(img);
     }
 
+    /* ===== ТЕМА ===== */
     function toggleTheme() {
       const body = document.body;
       const btn = document.getElementById('themeBtn');
@@ -629,6 +747,39 @@
       }
     }
 
+    /* ===== ЯЗЫК ===== */
+    let currentLang = 'en';
+    let dropdownOpen = false;
+
+    function toggleLang() {
+      dropdownOpen = !dropdownOpen;
+      const btn      = document.getElementById('langBtn');
+      const dropdown = document.getElementById('langDropdown');
+      btn.classList.toggle('open', dropdownOpen);
+      dropdown.classList.toggle('open', dropdownOpen);
+    }
+
+    function selectLang(code, flag, label) {
+      currentLang = code;
+      document.getElementById('langBtnText').textContent = flag + ' ' + label;
+      document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      dropdownOpen = false;
+      document.getElementById('langBtn').classList.remove('open');
+      document.getElementById('langDropdown').classList.remove('open');
+      send('set_language:' + code);
+    }
+
+    document.addEventListener('click', function(e) {
+      const toggle = document.getElementById('langToggle');
+      if (!toggle.contains(e.target)) {
+        dropdownOpen = false;
+        document.getElementById('langBtn').classList.remove('open');
+        document.getElementById('langDropdown').classList.remove('open');
+      }
+    });
+
+    /* ===== НАВИГАЦИЯ ===== */
     function navClick(el, action) {
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
