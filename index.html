@@ -565,23 +565,18 @@
   </header>
 
   <!-- ===== ГЛАВНАЯ ===== -->
-  <div class="page-wrap" id="mainScreen">
+<div class="page-wrap" id="mainScreen">
 
-    .btn-how {
-  margin: 0 0 16px 0;
-  width: 100%;
-  animation: fadeUp 0.35s ease 0.10s both;
-}
-
-    <div class="menu">
-      <button class="btn" onclick="send('create_deal')" id="btn-deal"></button>
-      <button class="btn" onclick="send('support')"     id="btn-support"></button>
-      <button class="btn" onclick="send('help')"        id="btn-help"></button>
-    </div>
-
-    <div class="footer" id="txt-footer"></div>
-
+  <div class="menu">
+    <button class="btn btn-how" onclick="send('how_to_order')">❓ Как создать ордер?</button>
+    <button class="btn" onclick="send('create_deal')" id="btn-deal"></button>
+    <button class="btn" onclick="send('support')"     id="btn-support"></button>
+    <button class="btn" onclick="send('help')"        id="btn-help"></button>
   </div>
+
+  <div class="footer" id="txt-footer"></div>
+
+</div>
 
   <!-- ===== ПРОФИЛЬ ===== -->
   <div class="page-wrap profile-screen" id="profileScreen">
