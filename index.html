@@ -347,6 +347,11 @@
     .btn:nth-child(1) { animation: fadeUp 0.35s ease 0.15s both; }
     .btn:nth-child(2) { animation: fadeUp 0.35s ease 0.20s both; }
     .btn:nth-child(3) { animation: fadeUp 0.35s ease 0.25s both; }
+    .btn-how {
+  margin: 0 16px 16px;
+  width: calc(100% - 32px);
+  animation: fadeUp 0.35s ease 0.10s both;
+}
 
     .footer {
       margin-top: 28px;
@@ -561,31 +566,9 @@
 
   <!-- ===== ГЛАВНАЯ ===== -->
   <div class="page-wrap" id="mainScreen">
-
-    <div class="welcome-card">
-      <div class="row">
-        <span class="emoji">👋</span>
-        <span id="txt-welcome"></span>
-      </div>
-      <div class="highlight">
-        <div class="row">
-          <span class="emoji">✨</span>
-          <span id="txt-slogan1"></span>
-        </div>
-        <div class="row">
-          <span class="emoji">🤖</span>
-          <span id="txt-slogan2"></span>
-        </div>
-      </div>
-      <div class="row">
-        <span class="emoji">💼</span>
-        <span id="txt-support"></span> - <a class="link" href="https://t.me/LumaEscrow">@LumaEscrow</a>
-      </div>
-      <div class="row">
-        <span class="emoji">🛡</span>
-        <span id="txt-safety"></span>
-      </div>
-    </div>
+<button class="btn btn-how" onclick="send('how_to_order')">
+  ❓ Как создать ордер?
+</button>
 
     <div class="menu">
       <button class="btn" onclick="send('create_deal')" id="btn-deal"></button>
