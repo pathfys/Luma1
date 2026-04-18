@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Luma Gift</title>
+  <title>Luma</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
@@ -76,52 +76,105 @@
       100% { background-position: 0 0; }
     }
 
-    .top-controls,
-    .theme-toggle,
-    .header,
-    .welcome-card,
-    .menu,
-    .footer,
-    .bottom-nav,
-    .profile-screen {
-      position: relative;
-      z-index: 1;
+    /* ===== ЕДИНАЯ ШАПКА — ФИКСИРОВАННАЯ ===== */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 58px;
+      background: rgba(13,13,13,0.85);
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      z-index: 999;
+      transition: background 0.3s, border-color 0.3s;
     }
 
-    /* ===== ВЕРХНИЕ КНОПКИ ===== */
-    .top-controls {
-      position: fixed;
-      top: 14px;
-      right: 14px;
+    body.light .topbar {
+      background: rgba(232,240,254,0.88);
+      border-bottom: 1px solid var(--nav-border);
+    }
+
+    /* ЛОГОТИП */
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 6px 12px 6px 8px;
+    }
+
+    body.light .logo-wrap {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.10);
+    }
+
+    .ton-icon {
+      width: 24px; height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      animation: tonGlow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes tonGlow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.8)) drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
+      50%       { filter: drop-shadow(0 0 12px rgba(255,255,255,1.0)) drop-shadow(0 0 28px rgba(255,255,255,0.6)); }
+    }
+
+    .logo-text {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      text-shadow: 0 0 16px rgba(255,255,255,0.25), 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    body.light .logo-text {
+      color: #1a1a1a;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    /* ПРАВАЯ ЧАСТЬ ШАПКИ */
+    .topbar-right {
       display: flex;
       align-items: center;
       gap: 6px;
-      z-index: 999;
     }
 
-    /* ===== КНОПКА ЯЗЫКА ===== */
-    .lang-toggle {
-      position: relative;
-    }
+    .lang-toggle { position: relative; }
 
     .lang-btn {
-      background: linear-gradient(135deg, #2980b9, #1a6fa3);
-      border: none;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 18px;
-      height: 34px;
+      height: 32px;
       padding: 0 10px;
       font-family: 'Inter', sans-serif;
       font-size: 11px;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 3px 10px rgba(41,128,185,0.45);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, background 0.2s;
       letter-spacing: 0.4px;
       white-space: nowrap;
+      backdrop-filter: blur(8px);
+    }
+
+    body.light .lang-btn {
+      background: rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.12);
     }
 
     .lang-btn:active { transform: scale(0.9); }
@@ -148,6 +201,7 @@
       transform: translateY(-8px) scale(0.96);
       pointer-events: none;
       transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 1001;
     }
 
     .lang-dropdown.open {
@@ -178,85 +232,38 @@
     .lang-option.selected { color: var(--accent); }
     .lang-option + .lang-option { border-top: 1px solid var(--card-border); }
 
-    /* ===== КНОПКА ТЕМЫ ===== */
     .theme-toggle {
-      background: linear-gradient(135deg, #2980b9, #1a6fa3);
-      border: none;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
       cursor: pointer;
-      z-index: 999;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 3px 10px rgba(41,128,185,0.45);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, background 0.2s;
+      backdrop-filter: blur(8px);
+    }
+
+    body.light .theme-toggle {
+      background: rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.12);
     }
 
     .theme-toggle:active { transform: scale(0.9); }
 
-    .header {
+    /* ===== ОТСТУП ПОД ШАПКУ ===== */
+    .page-wrap {
       width: 100%;
-      padding: 36px 24px 20px;
-      text-align: center;
-      animation: fadeUp 0.4s ease both;
-    }
-
-    .logo-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .logo-icon {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, #3bc6f5, #2980b9);
-      border-radius: 12px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow:
-        0 0 12px rgba(59,198,245,0.7),
-        0 0 28px rgba(59,198,245,0.4),
-        0 0 50px rgba(59,198,245,0.2);
-      animation: tonGlow 2.5s ease-in-out infinite;
+      padding-top: 72px;
     }
 
-    @keyframes tonGlow {
-      0%, 100% {
-        box-shadow:
-          0 0 12px rgba(59,198,245,0.7),
-          0 0 28px rgba(59,198,245,0.4),
-          0 0 50px rgba(59,198,245,0.2);
-      }
-      50% {
-        box-shadow:
-          0 0 20px rgba(59,198,245,0.9),
-          0 0 45px rgba(59,198,245,0.6),
-          0 0 80px rgba(59,198,245,0.3);
-      }
-    }
-
-    .logo-text {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: #ffffff;
-      -webkit-text-fill-color: #ffffff;
-      letter-spacing: -0.5px;
-      text-shadow: 0 0 20px rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.8);
-    }
-
-    body.light .logo-text {
-      color: #1a1a1a;
-      -webkit-text-fill-color: #1a1a1a;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-
+    /* ===== WELCOME CARD ===== */
     .welcome-card {
       width: calc(100% - 32px);
       background: var(--surface);
@@ -295,6 +302,7 @@
     .welcome-card .highlight .row { font-size: 13px; }
     .link { color: var(--accent); text-decoration: none; }
 
+    /* ===== МЕНЮ ===== */
     .menu {
       width: calc(100% - 32px);
       display: flex;
@@ -306,50 +314,39 @@
     .btn {
       width: 100%;
       padding: 16px 20px;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 14px;
       font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+      transition: transform 0.12s ease, opacity 0.12s ease, background 0.15s ease, border-color 0.15s;
       display: flex;
       align-items: center;
       justify-content: center;
       letter-spacing: 0.2px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn:active { transform: scale(0.97); opacity: 0.9; }
-
-    .btn-blue {
-      background: linear-gradient(135deg, #2980b9, #1a6fa3);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(41,128,185,0.3);
-    }
-
-    .btn-blue:hover { box-shadow: 0 6px 28px rgba(41,128,185,0.45); }
-
-    .btn-red {
-      background: linear-gradient(135deg, var(--red), #c0392b);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(231,76,60,0.25);
-    }
-
-    .btn-red:hover { box-shadow: 0 6px 28px rgba(231,76,60,0.35); }
-
-    .btn::after {
-      content: '';
-      position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
       background: rgba(255,255,255,0.06);
-      opacity: 0;
-      transition: opacity 0.2s;
+      color: rgba(255,255,255,0.88);
+      backdrop-filter: blur(8px);
     }
 
-    .btn:active::after { opacity: 1; }
+    body.light .btn {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.10);
+      color: rgba(0,0,0,0.80);
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    body.light .btn:hover { background: rgba(0,0,0,0.09); }
+    .btn:active { transform: scale(0.97); opacity: 0.85; }
+
+    .btn:nth-child(1) { animation: fadeUp 0.35s ease 0.15s both; }
+    .btn:nth-child(2) { animation: fadeUp 0.35s ease 0.20s both; }
+    .btn:nth-child(3) { animation: fadeUp 0.35s ease 0.25s both; }
 
     .footer {
       margin-top: 28px;
@@ -403,9 +400,7 @@
     }
 
     body.light .nav-circle { background: #e0e0e5; }
-
     .nav-circle svg { color: #888; transition: color 0.2s; }
-
     .nav-item.active .nav-circle { background: #2a2a2a; }
     .nav-item.active .nav-circle svg { color: #ffffff; }
     .nav-item.active .nav-label { color: #3498db; }
@@ -433,13 +428,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .btn:nth-child(1) { animation: fadeUp 0.35s ease 0.15s both; }
-    .btn:nth-child(2) { animation: fadeUp 0.35s ease 0.20s both; }
-    .btn:nth-child(3) { animation: fadeUp 0.35s ease 0.25s both; }
-    .btn:nth-child(4) { animation: fadeUp 0.35s ease 0.30s both; }
-    .btn:nth-child(5) { animation: fadeUp 0.35s ease 0.35s both; }
-
-    /* ===== ЭКРАН ПРОФИЛЯ ===== */
+    /* ===== ПРОФИЛЬ ===== */
     .profile-screen {
       width: calc(100% - 32px);
       display: none;
@@ -538,45 +527,41 @@
 
     .profile-row .row-label .emoji { font-size: 15px; }
     .profile-row .row-value { font-size: 14px; font-weight: 600; color: var(--text-muted); }
-
   </style>
 </head>
 <body>
 
-  <!-- ВЕРХНИЕ КНОПКИ: ЯЗЫК + ТЕМА -->
-  <div class="top-controls">
-    <div class="lang-toggle" id="langToggle">
-      <button class="lang-btn" id="langBtn" onclick="toggleLang()">
-        <span id="langBtnText">🇷🇺 RU</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="lang-dropdown" id="langDropdown">
-        <button class="lang-option selected" onclick="selectLang('ru', '🇷🇺', 'RU', this)">
-          <span class="flag">🇷🇺</span> Русский
-        </button>
-        <button class="lang-option" onclick="selectLang('en', '🇬🇧', 'EN', this)">
-          <span class="flag">🇬🇧</span> English
-        </button>
-        <button class="lang-option" onclick="selectLang('uk', '🇺🇦', 'UA', this)">
-          <span class="flag">🇺🇦</span> Українська
-        </button>
-        <button class="lang-option" onclick="selectLang('es', '🇪🇸', 'ES', this)">
-          <span class="flag">🇪🇸</span> Español
-        </button>
-      </div>
-    </div>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-  </div>
-
-  <div class="header">
+  <!-- ===== ЕДИНАЯ ФИКСИРОВАННАЯ ШАПКА ===== -->
+  <header class="topbar">
     <div class="logo-wrap">
-      <div class="logo-icon">💎</div>
-      <span class="logo-text">Luma Gift</span>
+      <div class="ton-icon">
+        <svg width="22" height="22" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0Z" fill="white" fill-opacity="0.12"/>
+          <path d="M37.12 15.68H18.88C15.344 15.68 13.216 19.52 15.12 22.512L26.32 40.88C27.056 42.096 28.944 42.096 29.68 40.88L40.88 22.512C42.784 19.52 40.656 15.68 37.12 15.68ZM26.24 37.168L20.048 27.04H26.24V37.168ZM26.24 24.432H18.08L26.24 18.96V24.432ZM29.76 37.168V27.04H35.952L29.76 37.168ZM29.76 24.432V18.96L37.92 24.432H29.76Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-text">Luma</span>
     </div>
-  </div>
 
-  <!-- ГЛАВНАЯ -->
-  <div id="mainScreen" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div class="topbar-right">
+      <div class="lang-toggle" id="langToggle">
+        <button class="lang-btn" id="langBtn" onclick="toggleLang()">
+          <span id="langBtnText">🇷🇺 RU</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button class="lang-option selected" onclick="selectLang('ru','🇷🇺','RU',this)"><span class="flag">🇷🇺</span> Русский</button>
+          <button class="lang-option" onclick="selectLang('en','🇬🇧','EN',this)"><span class="flag">🇬🇧</span> English</button>
+          <button class="lang-option" onclick="selectLang('uk','🇺🇦','UA',this)"><span class="flag">🇺🇦</span> Українська</button>
+          <button class="lang-option" onclick="selectLang('es','🇪🇸','ES',this)"><span class="flag">🇪🇸</span> Español</button>
+        </div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    </div>
+  </header>
+
+  <!-- ===== ГЛАВНАЯ ===== -->
+  <div class="page-wrap" id="mainScreen">
 
     <div class="welcome-card">
       <div class="row">
@@ -604,18 +589,17 @@
     </div>
 
     <div class="menu">
-      <button class="btn btn-blue" onclick="send('bind_wallet')" id="btn-wallet"></button>
-      <button class="btn btn-red"  onclick="send('create_deal')" id="btn-deal"></button>
-      <button class="btn btn-blue" onclick="send('support')"     id="btn-support"></button>
-      <button class="btn btn-blue" onclick="send('help')"        id="btn-help"></button>
+      <button class="btn" onclick="send('create_deal')" id="btn-deal"></button>
+      <button class="btn" onclick="send('support')"     id="btn-support"></button>
+      <button class="btn" onclick="send('help')"        id="btn-help"></button>
     </div>
 
     <div class="footer" id="txt-footer"></div>
 
   </div>
 
-  <!-- ПРОФИЛЬ -->
-  <div id="profileScreen" class="profile-screen">
+  <!-- ===== ПРОФИЛЬ ===== -->
+  <div class="page-wrap profile-screen" id="profileScreen">
 
     <div class="profile-avatar-wrap">
       <div class="avatar-ring">
@@ -651,9 +635,9 @@
 
   </div>
 
-  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+  <!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
   <nav class="bottom-nav">
-    <button class="nav-item" id="navProfile" onclick="navClick(this, 'profile')">
+    <button class="nav-item" id="navProfile" onclick="navClick(this,'profile')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="7" r="4"/>
@@ -663,7 +647,7 @@
       <span class="nav-label" id="nav-profile-label"></span>
     </button>
 
-    <button class="nav-item active" id="navHome" onclick="navClick(this, 'home')">
+    <button class="nav-item active" id="navHome" onclick="navClick(this,'home')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 12L12 4l9 8"/>
@@ -673,7 +657,7 @@
       <span class="nav-label" id="nav-home-label"></span>
     </button>
 
-    <button class="nav-item" id="navHistory" onclick="navClick(this, 'history')">
+    <button class="nav-item" id="navHistory" onclick="navClick(this,'history')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="3" width="16" height="18" rx="2"/>
@@ -685,7 +669,7 @@
       <span class="nav-label" id="nav-history-label"></span>
     </button>
 
-    <button class="nav-item" id="navTop" onclick="navClick(this, 'top')">
+    <button class="nav-item" id="navTop" onclick="navClick(this,'top')">
       <div class="nav-circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="13" width="5" height="8" rx="1"/>
@@ -710,16 +694,15 @@
     /* ===== ПЕРЕВОДЫ ===== */
     const i18n = {
       ru: {
-        welcome:      'Вас приветствует <b>Luma Gift!</b>',
-        slogan1:      '<b>Luma Gift</b> – Сервис проверенный временем.',
+        welcome:      'Вас приветствует <b>Luma!</b>',
+        slogan1:      '<b>Luma</b> – Сервис проверенный временем.',
         slogan2:      'Ключевые метрики, сделки автоматизированы.',
         support:      'Поддержка 24/7',
         safety:       'Ваша безопасность — наша работа',
-        btnWallet:    'Управление реквизитами',
         btnDeal:      'Активация ордера',
         btnSupport:   'Поддержка',
         btnHelp:      'Безопасность',
-        footer:       '© 2024 Luma Gift · Безопасные сделки',
+        footer:       '© 2024 Luma · Безопасные сделки',
         navProfile:   'Профиль',
         navHome:      'Главная',
         navHistory:   'История',
@@ -730,16 +713,15 @@
         profDeals:    'Сделок',
       },
       en: {
-        welcome:      'Welcome to <b>Luma Gift!</b>',
-        slogan1:      '<b>Luma Gift</b> – A time-tested service.',
+        welcome:      'Welcome to <b>Luma!</b>',
+        slogan1:      '<b>Luma</b> – A time-tested service.',
         slogan2:      'Key metrics and deals are automated.',
         support:      'Support 24/7',
         safety:       'Your security is our job',
-        btnWallet:    'Manage Requisites',
         btnDeal:      'Activate Order',
         btnSupport:   'Support',
         btnHelp:      'Security',
-        footer:       '© 2024 Luma Gift · Secure Deals',
+        footer:       '© 2024 Luma · Secure Deals',
         navProfile:   'Profile',
         navHome:      'Home',
         navHistory:   'History',
@@ -750,16 +732,15 @@
         profDeals:    'Deals',
       },
       uk: {
-        welcome:      'Вас вітає <b>Luma Gift!</b>',
-        slogan1:      '<b>Luma Gift</b> – Сервіс перевірений часом.',
+        welcome:      'Вас вітає <b>Luma!</b>',
+        slogan1:      '<b>Luma</b> – Сервіс перевірений часом.',
         slogan2:      'Ключові метрики, угоди автоматизовані.',
         support:      'Підтримка 24/7',
         safety:       'Ваша безпека — наша робота',
-        btnWallet:    'Управління реквізитами',
         btnDeal:      'Активація ордера',
         btnSupport:   'Підтримка',
         btnHelp:      'Безпека',
-        footer:       '© 2024 Luma Gift · Безпечні угоди',
+        footer:       '© 2024 Luma · Безпечні угоди',
         navProfile:   'Профіль',
         navHome:      'Головна',
         navHistory:   'Історія',
@@ -770,16 +751,15 @@
         profDeals:    'Угод',
       },
       es: {
-        welcome:      '¡Bienvenido a <b>Luma Gift!</b>',
-        slogan1:      '<b>Luma Gift</b> – Un servicio probado en el tiempo.',
+        welcome:      '¡Bienvenido a <b>Luma!</b>',
+        slogan1:      '<b>Luma</b> – Un servicio probado en el tiempo.',
         slogan2:      'Métricas clave y tratos automatizados.',
         support:      'Soporte 24/7',
         safety:       'Tu seguridad es nuestro trabajo',
-        btnWallet:    'Gestionar Requisitos',
         btnDeal:      'Activar Orden',
         btnSupport:   'Soporte',
         btnHelp:      'Seguridad',
-        footer:       '© 2024 Luma Gift · Tratos Seguros',
+        footer:       '© 2024 Luma · Tratos Seguros',
         navProfile:   'Perfil',
         navHome:      'Inicio',
         navHistory:   'Historial',
@@ -798,7 +778,6 @@
       document.getElementById('txt-slogan2').textContent = t.slogan2;
       document.getElementById('txt-support').textContent = t.support;
       document.getElementById('txt-safety').textContent  = t.safety;
-      document.getElementById('btn-wallet').textContent  = t.btnWallet;
       document.getElementById('btn-deal').textContent    = t.btnDeal;
       document.getElementById('btn-support').textContent = t.btnSupport;
       document.getElementById('btn-help').textContent    = t.btnHelp;
@@ -814,18 +793,15 @@
       document.getElementById('txt-prof-deals').textContent      = t.profDeals;
     }
 
-    /* Применить язык по умолчанию */
     applyLang('ru');
 
     /* ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ===== */
     const user = tg.initDataUnsafe?.user || {};
     const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || '—';
-    const userId   = user.id || '—';
-    const username = user.username ? '@' + user.username : '—';
 
     document.getElementById('profileName').textContent  = fullName;
-    document.getElementById('profileId').textContent    = userId;
-    document.getElementById('cardUsername').textContent = username;
+    document.getElementById('profileId').textContent    = user.id || '—';
+    document.getElementById('cardUsername').textContent = user.username ? '@' + user.username : '—';
 
     if (user.photo_url) {
       const img = document.createElement('img');
@@ -837,15 +813,8 @@
 
     /* ===== ТЕМА ===== */
     function toggleTheme() {
-      const body = document.body;
-      const btn = document.getElementById('themeBtn');
-      if (body.classList.contains('light')) {
-        body.classList.remove('light');
-        btn.textContent = '🌙';
-      } else {
-        body.classList.add('light');
-        btn.textContent = '☀️';
-      }
+      const light = document.body.classList.toggle('light');
+      document.getElementById('themeBtn').textContent = light ? '☀️' : '🌙';
     }
 
     /* ===== ЯЗЫК ===== */
@@ -871,8 +840,7 @@
     }
 
     document.addEventListener('click', function(e) {
-      const toggle = document.getElementById('langToggle');
-      if (!toggle.contains(e.target)) {
+      if (!document.getElementById('langToggle').contains(e.target)) {
         dropdownOpen = false;
         document.getElementById('langBtn').classList.remove('open');
         document.getElementById('langDropdown').classList.remove('open');
@@ -888,14 +856,17 @@
       const profile = document.getElementById('profileScreen');
 
       if (action === 'profile') {
-        main.style.display = 'none';
+        main.style.display    = 'none';
+        profile.style.display = 'flex';
         profile.classList.add('visible');
       } else if (action === 'home') {
+        profile.style.display = 'none';
         profile.classList.remove('visible');
-        main.style.display = 'flex';
+        main.style.display    = 'flex';
       } else {
+        profile.style.display = 'none';
         profile.classList.remove('visible');
-        main.style.display = 'flex';
+        main.style.display    = 'flex';
         send(action);
       }
     }
