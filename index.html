@@ -566,9 +566,12 @@
 
   <!-- ===== ГЛАВНАЯ ===== -->
   <div class="page-wrap" id="mainScreen">
-<button class="btn btn-how" onclick="send('how_to_order')">
-  ❓ Как создать ордер?
-</button>
+
+    .btn-how {
+  margin: 0 0 16px 0;
+  width: 100%;
+  animation: fadeUp 0.35s ease 0.10s both;
+}
 
     <div class="menu">
       <button class="btn" onclick="send('create_deal')" id="btn-deal"></button>
@@ -765,27 +768,22 @@
       },
     };
 
-    function applyLang(code) {
-      const t = i18n[code];
-      document.getElementById('txt-welcome').innerHTML   = t.welcome;
-      document.getElementById('txt-slogan1').innerHTML   = t.slogan1;
-      document.getElementById('txt-slogan2').textContent = t.slogan2;
-      document.getElementById('txt-support').textContent = t.support;
-      document.getElementById('txt-safety').textContent  = t.safety;
-      document.getElementById('btn-deal').textContent    = t.btnDeal;
-      document.getElementById('btn-support').textContent = t.btnSupport;
-      document.getElementById('btn-help').textContent    = t.btnHelp;
-      document.getElementById('txt-footer').textContent          = t.footer;
-      document.getElementById('txt-footer-profile').textContent  = t.footer;
-      document.getElementById('nav-profile-label').textContent   = t.navProfile;
-      document.getElementById('nav-home-label').textContent      = t.navHome;
-      document.getElementById('nav-history-label').textContent   = t.navHistory;
-      document.getElementById('nav-top-label').textContent       = t.navTop;
-      document.getElementById('txt-prof-username').textContent   = t.profUsername;
-      document.getElementById('txt-prof-lang').textContent       = t.profLang;
-      document.getElementById('txt-prof-status').textContent     = t.profStatus;
-      document.getElementById('txt-prof-deals').textContent      = t.profDeals;
-    }
+  function applyLang(code) {
+  const t = i18n[code];
+  document.getElementById('btn-deal').textContent    = t.btnDeal;
+  document.getElementById('btn-support').textContent = t.btnSupport;
+  document.getElementById('btn-help').textContent    = t.btnHelp;
+  document.getElementById('txt-footer').textContent          = t.footer;
+  document.getElementById('txt-footer-profile').textContent  = t.footer;
+  document.getElementById('nav-profile-label').textContent   = t.navProfile;
+  document.getElementById('nav-home-label').textContent      = t.navHome;
+  document.getElementById('nav-history-label').textContent   = t.navHistory;
+  document.getElementById('nav-top-label').textContent       = t.navTop;
+  document.getElementById('txt-prof-username').textContent   = t.profUsername;
+  document.getElementById('txt-prof-lang').textContent       = t.profLang;
+  document.getElementById('txt-prof-status').textContent     = t.profStatus;
+  document.getElementById('txt-prof-deals').textContent      = t.profDeals;
+}
 
     applyLang('ru');
 
