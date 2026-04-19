@@ -697,13 +697,7 @@ body.light .user-pill {
 }
 
 .user-pill-name {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 90px;
+  display: none;
 }
     .profile-id-badge .id-value { color: var(--accent); font-size: 15px; font-weight: 600; letter-spacing: 0.5px; }
 
@@ -1225,7 +1219,7 @@ safeSet('cardUsername', user.username ? '@' + user.username : '—');
 const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '🇺🇦 Українська', es: '🇪🇸 Español' };
 const userLang = user.language_code || 'ru';
 safeSet('cardLang', langMap[userLang] || userLang.toUpperCase());
-safeSet('pillName', user.username ? '@' + user.username : (user.first_name || '—'));
+safeSet('pillName', '');
 
 const pill = document.getElementById('userPill');
 pill.addEventListener('click', () => {
