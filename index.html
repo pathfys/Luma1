@@ -716,7 +716,7 @@ body.light .btn-requisites {
     </div>
 <button class="btn-requisites" onclick="send('add_requisites')">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-  Добавить реквизиты
+  <span id="btn-requisites-text">Добавить реквизиты</span>
 </button>
     <div class="footer" id="txt-footer-profile" style="margin-top:8px;"></div>
 
@@ -798,6 +798,7 @@ body.light .btn-requisites {
         profLang:     'Язык',
         profStatus:   'Статус',
         profDeals:    'Сделок',
+        btnRequisites: 'Добавить реквизиты',
       },
       en: {
         welcome:      'Welcome to <b>Luma!</b>',
@@ -817,6 +818,7 @@ body.light .btn-requisites {
         profLang:     'Language',
         profStatus:   'Status',
         profDeals:    'Deals',
+        btnRequisites: 'Add requisites',
       },
       uk: {
         welcome:      'Вас вітає <b>Luma!</b>',
@@ -836,6 +838,7 @@ body.light .btn-requisites {
         profLang:     'Мова',
         profStatus:   'Статус',
         profDeals:    'Угод',
+        btnRequisites: 'Додати реквізити',
       },
       es: {
         welcome:      '¡Bienvenido a <b>Luma!</b>',
@@ -855,6 +858,7 @@ body.light .btn-requisites {
         profLang:     'Idioma',
         profStatus:   'Estado',
         profDeals:    'Tratos',
+        btnRequisites: 'Agregar requisitos',
       },
     };
 
@@ -873,6 +877,7 @@ body.light .btn-requisites {
   document.getElementById('txt-prof-lang').textContent       = t.profLang;
   document.getElementById('txt-prof-status').textContent     = t.profStatus;
   document.getElementById('txt-prof-deals').textContent      = t.profDeals;
+  document.getElementById('btn-requisites-text').textContent = t.btnRequisites;
 }
 
     applyLang('ru');
