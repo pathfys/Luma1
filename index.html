@@ -1378,7 +1378,15 @@ document.getElementById('editReqModal').classList.remove('open');
 
 // Сохраняем реквизит
 savedRequisite = val;
-document.getElementById('cardRequisite').textContent = val;
+
+// Сокращаем для отображения
+function shortenReq(v) {
+  if (v.length <= 12) return v;
+  return v.slice(0, 3) + '...' + v.slice(-4);
+}
+
+document.getElementById('cardRequisite').textContent = shortenReq(val);
+document.getElementById('edit-current-req-value').textContent = shortenReq(val);
 
 // Меняем текст успеха если режим редактирования
 const successText = document.getElementById('success-title-text');
@@ -1600,7 +1608,7 @@ function confirmEditCurrency() {
    
 <!-- ===== МОДАЛЬНОЕ ИЗМЕНЕНИЯ РЕКВИЗИТОВ ===== -->
 <div class="modal-overlay" id="editReqModal" onclick="closeEditReqModal(event)">
-  <div class="modal-sheet">
+  <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;padding-bottom:90px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:-4px;">
       <div class="modal-handle" style="margin:0;"></div>
       <button onclick="document.getElementById('editReqModal').classList.remove('open')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
