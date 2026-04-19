@@ -913,6 +913,18 @@ body.light .success-btn {
 }
 
 .success-btn:active { transform: scale(0.97); opacity: 0.85; }
+
+    .btn-verify {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.88);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+body.light .btn-verify {
+  background: rgba(0,0,0,0.05);
+  color: rgba(0,0,0,0.80);
+  border: 1px solid rgba(0,0,0,0.10);
+}
     
   </style>
 </head>
@@ -1005,10 +1017,10 @@ body.light .success-btn {
 </div>
 <div class="profile-row">
   <span class="row-label">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    <span id="txt-prof-deals"></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    <span id="txt-prof-status"></span>
   </span>
- <span class="row-value">—</span>
+  <span class="row-value" id="cardStatus">—</span>
 </div>
 <div class="profile-row">
   <span class="row-label">
@@ -1025,6 +1037,10 @@ body.light .success-btn {
       <button class="btn-requisites btn-edit-req" onclick="openEditReqModal()">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
   <span id="btn-edit-text">Изменить реквизиты</span>
+</button>
+    <button class="btn-requisites btn-verify" onclick="send('verification')">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  <span id="btn-verify-text">Верификация</span>
 </button>
     <div class="footer" id="txt-footer-profile" style="margin-top:8px;"></div>
 
@@ -1121,6 +1137,8 @@ body.light .success-btn {
         btnEditConfirm: 'Изменить',
         profRequisite:  'Реквизиты',
         successEditTitle: 'Вы успешно привязали новые реквизиты!',
+        btnVerify:     'Верификация',
+        statusUnverified: ' Не верифицирован',
       },
       en: {
         welcome:      'Welcome to <b>Luma!</b>',
@@ -1155,6 +1173,8 @@ body.light .success-btn {
         btnEditConfirm: 'Change',
         profRequisite:  'Requisites',
         successEditTitle: 'You successfully updated your requisites!',
+        btnVerify:     'Verification',
+        statusUnverified: ' Not verified',
       },
       uk: {
         welcome:      'Вас вітає <b>Luma!</b>',
@@ -1189,6 +1209,8 @@ body.light .success-btn {
         btnEditConfirm: 'Змінити',
         profRequisite:  'Реквізити',
         successEditTitle: 'Ви успішно прив\'язали нові реквізити!',
+        btnVerify:     'Верифікація',
+        statusUnverified: ' Не верифікований',
       },
       es: {
         welcome:      '¡Bienvenido a <b>Luma!</b>',
@@ -1223,6 +1245,8 @@ body.light .success-btn {
        btnEditConfirm: 'Cambiar',
        profRequisite:  'Requisitos',
        successEditTitle: '¡Ha actualizado sus requisitos con éxito!',
+       btnVerify:     'Verificación',
+       statusUnverified: ' No verificado',
       },
     };
 
@@ -1252,6 +1276,8 @@ body.light .success-btn {
   s('edit-choose-new-label', t.chooseNew);
   s('edit-confirm-btn', t.btnEditConfirm);
   s('txt-prof-requisite', t.profRequisite);
+  s('btn-verify-text', t.btnVerify);
+  s('cardStatus', t.statusUnverified);
 const editTitle = document.querySelector('#editReqModal .edit-title');
 if (editTitle) editTitle.textContent = t.editTitle;
  const inputTitle = document.querySelector('#reqInputModal .modal-title');
@@ -1279,6 +1305,7 @@ safeSet('cardUsername', user.username ? '@' + user.username : '—');
 const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '🇺🇦 Українська', es: '🇪🇸 Español' };
 const userLang = user.language_code || 'ru';
 safeSet('cardLang', langMap[userLang] || userLang.toUpperCase());
+safeSet('cardStatus', ' Не верифицирован');
 safeSet('pillName', '');
 
 const pill = document.getElementById('userPill');
