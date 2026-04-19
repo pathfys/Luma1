@@ -729,13 +729,17 @@ body.light .user-pill {
     body.light .profile-row { border-bottom: 1px solid rgba(0,0,0,0.05); }
     .profile-row:last-child { border-bottom: none; padding-bottom: 0; }
 
-    .profile-row .row-label {
-      color: var(--text-muted);
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+   .profile-row .row-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  word-break: break-all;
+}
 
     .profile-row .row-label .emoji { font-size: 15px; }
     .profile-row .row-value {
@@ -1391,7 +1395,7 @@ savedRequisite = val;
 // Сокращаем для отображения
 function shortenReq(v) {
   if (v.length <= 12) return v;
-  return v.slice(0, 3) + '...' + v.slice(-4);
+  return v.slice(0, 6) + '...' + v.slice(-6);
 }
 
 document.getElementById('cardRequisite').textContent = shortenReq(val);
