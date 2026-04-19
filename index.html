@@ -1375,12 +1375,13 @@ function confirmRequisites() {
   if (old) old.remove();
 
   // Валидация
-  const validator = currencyValidators[selectedCurrency];
+const activeCurrency = window._editMode ? selectedEditCurrency : selectedCurrency;
+const validator = currencyValidators[activeCurrency];
   if (validator && !validator(val)) {
     const err = document.createElement('div');
     err.id = 'req-error';
     err.style.cssText = 'color:#e74c3c;font-size:12px;text-align:center;margin-top:-8px;';
-    err.textContent = currencyErrors[selectedCurrency];
+    err.textContent = currencyErrors[activeCurrency];
     document.getElementById('reqInputField').insertAdjacentElement('afterend', err);
     return;
   }
@@ -1411,7 +1412,7 @@ if (window._editMode) {
 }
 
 document.getElementById('successOverlay').classList.add('open');
-send('add_requisites:' + (selectedEditCurrency || selectedCurrency) + ':' + val);
+send('add_requisites:' + activeCurrency + ':' + val);
 }
     /* ===== ТЕМА ===== */
     function toggleTheme() {
