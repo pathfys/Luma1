@@ -499,14 +499,14 @@
 .user-pill {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.13);
   border-radius: 999px;
-  padding: 4px 12px 4px 4px;
+  padding: 3px 9px 3px 3px;
   cursor: pointer;
   transition: box-shadow 0.25s ease, background 0.2s;
-  max-width: 140px;
+  max-width: 120px;
 }
 
 body.light .user-pill {
@@ -522,9 +522,9 @@ body.light .user-pill {
 }
 
 .user-pill-avatar {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
+  width: 23px;
+  height: 23px;
+  min-width: 23px;
   border-radius: 50%;
   background: var(--surface2);
   overflow: hidden;
@@ -538,15 +538,15 @@ body.light .user-pill {
 }
 
 .user-pill-avatar img {
-  width: 28px;
-  height: 28px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
 }
 
 .user-pill-name {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -590,6 +590,32 @@ body.light .user-pill {
 
     .profile-row .row-label .emoji { font-size: 15px; }
     .profile-row .row-value { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+    .btn-requisites {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease, background 0.2s, color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.2px;
+  background: #ffffff;
+  color: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+body.light .btn-requisites {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.btn-requisites:active { transform: scale(0.97); opacity: 0.85; }
   </style>
 </head>
 <body>
@@ -688,7 +714,10 @@ body.light .user-pill {
   <span class="row-value">—</span>
 </div>
     </div>
-
+<button class="btn-requisites" onclick="send('add_requisites')">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  Добавить реквизиты
+</button>
     <div class="footer" id="txt-footer-profile" style="margin-top:8px;"></div>
 
   </div>
