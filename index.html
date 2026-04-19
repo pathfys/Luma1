@@ -865,7 +865,7 @@ body.light .btn-requisites {
   <span class="row-value">—</span>
 </div>
     </div>
-<button class="btn-requisites" onclick="send('add_requisites')">
+<button class="btn-requisites" onclick="openReqModal()">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
   <span id="btn-requisites-text">Добавить реквизиты</span>
 </button>
@@ -1070,6 +1070,31 @@ pill.addEventListener('click', () => {
   document.getElementById('pillAvatar').appendChild(pillImg);
 }
 
+    /* ===== МОДАЛЬНОЕ ОКНО РЕКВИЗИТОВ ===== */
+let selectedCurrency = null;
+
+function openReqModal() {
+  document.getElementById('reqModal').classList.add('open');
+}
+
+function closeReqModal(e) {
+  if (e.target === document.getElementById('reqModal')) {
+    document.getElementById('reqModal').classList.remove('open');
+  }
+}
+
+function selectCurrency(el, code) {
+  document.querySelectorAll('.currency-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCurrency = code;
+}
+
+function confirmCurrency() {
+  if (!selectedCurrency) return;
+  document.getElementById('reqModal').classList.remove('open');
+  send('add_requisites:' + selectedCurrency);
+}
+
     /* ===== ТЕМА ===== */
     function toggleTheme() {
       const light = document.body.classList.toggle('light');
@@ -1137,6 +1162,75 @@ pill.addEventListener('click', () => {
       tg.sendData(JSON.stringify({ action }));
     }
   </script>
+<!-- ===== МОДАЛЬНОЕ ОКНО РЕКВИЗИТОВ ===== -->
+<div class="modal-overlay" id="reqModal" onclick="closeReqModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title-text">Выберите реквизиты для получения:</div>
 
+    <div class="currency-list">
+
+      <div class="currency-item" onclick="selectCurrency(this,'ton')">
+        <div class="currency-flag">
+          <svg width="28" height="28" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="#0088CC"/><path d="M37.12 17.68H18.88c-3.536 0-5.664 3.84-3.76 6.832L26.32 42.88c.736 1.216 2.624 1.216 3.36 0l11.2-18.368c1.904-2.992-.224-6.832-3.76-6.832ZM26.24 39.168L20.048 29.04H26.24v10.128ZM26.24 26.432H18.08l8.16-5.472v5.472ZM29.76 39.168V29.04h6.192L29.76 39.168ZM29.76 26.432v-5.472l8.16 5.472H29.76Z" fill="white"/></svg>
+        </div>
+        <div class="currency-info">
+          <span class="currency-name">TON</span>
+          <span class="currency-sub">Toncoin · Криптовалюта</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+      <div class="currency-item" onclick="selectCurrency(this,'rub')">
+        <div class="currency-flag">🇷🇺</div>
+        <div class="currency-info">
+          <span class="currency-name">RUB</span>
+          <span class="currency-sub">Российский рубль</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+      <div class="currency-item" onclick="selectCurrency(this,'uah')">
+        <div class="currency-flag">🇺🇦</div>
+        <div class="currency-info">
+          <span class="currency-name">UAH</span>
+          <span class="currency-sub">Українська гривня</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+      <div class="currency-item" onclick="selectCurrency(this,'usd')">
+        <div class="currency-flag">🇺🇸</div>
+        <div class="currency-info">
+          <span class="currency-name">USD</span>
+          <span class="currency-sub">US Dollar</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+      <div class="currency-item" onclick="selectCurrency(this,'eur')">
+        <div class="currency-flag">🇪🇺</div>
+        <div class="currency-info">
+          <span class="currency-name">EUR</span>
+          <span class="currency-sub">Euro</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+      <div class="currency-item" onclick="selectCurrency(this,'kzt')">
+        <div class="currency-flag">🇰🇿</div>
+        <div class="currency-info">
+          <span class="currency-name">KZT</span>
+          <span class="currency-sub">Казахстанский тенге</span>
+        </div>
+        <div class="currency-check"></div>
+      </div>
+
+    </div>
+
+    <button class="modal-confirm" id="modal-confirm-btn" onclick="confirmCurrency()">Подтвердить</button>
+  </div>
+</div>
+  
 </body>
 </html>
