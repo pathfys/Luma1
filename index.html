@@ -547,6 +547,11 @@
       <span class="logo-text">Luma</span>
     </div>
 
+<div class="user-pill" id="userPill" onclick="navClick(document.getElementById('navProfile'),'profile')">
+  <div class="user-pill-avatar" id="pillAvatar">👤</div>
+  <span class="user-pill-name" id="pillName">—</span>
+</div>
+    
     <div class="topbar-right">
       <div class="lang-toggle" id="langToggle">
         <button class="lang-btn" id="langBtn" onclick="toggleLang()">
@@ -795,13 +800,29 @@ const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '�
 const userLang = user.language_code || 'en';
 document.getElementById('cardLang').textContent = langMap[userLang] || userLang.toUpperCase();
 
-    if (user.photo_url) {
-      const img = document.createElement('img');
-      img.src = user.photo_url;
-      img.alt = fullName;
-      document.getElementById('avatarInner').innerHTML = '';
-      document.getElementById('avatarInner').appendChild(img);
-    }
+    // Плашка пользователя в шапке
+document.getElementById('pillName').textContent = user.username ? '@' + user.username : (user.first_name || '—');
+
+const pill = document.getElementById('userPill');
+pill.addEventListener('click', () => {
+  pill.classList.add('glow');
+  setTimeout(() => pill.classList.remove('glow'), 600);
+});
+    
+  if (user.photo_url) {
+  const img = document.createElement('img');
+  img.src = user.photo_url;
+  img.alt = fullName;
+  document.getElementById('avatarInner').innerHTML = '';
+  document.getElementById('avatarInner').appendChild(img);
+
+  // Та же аватарка в плашке шапки
+  const pillImg = document.createElement('img');
+  pillImg.src = user.photo_url;
+  pillImg.alt = fullName;
+  document.getElementById('pillAvatar').innerHTML = '';
+  document.getElementById('pillAvatar').appendChild(pillImg);
+}
 
     /* ===== ТЕМА ===== */
     function toggleTheme() {
