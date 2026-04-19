@@ -1171,43 +1171,47 @@ body.light .success-btn {
 
   function applyLang(code) {
   const t = i18n[code];
-  document.getElementById('btn-deal').textContent    = t.btnDeal;
-  document.getElementById('btn-support').textContent = t.btnSupport;
-  document.getElementById('btn-help').textContent    = t.btnHelp;
-  document.getElementById('txt-footer').textContent          = t.footer;
-  document.getElementById('txt-footer-profile').textContent  = t.footer;
-  document.getElementById('nav-profile-label').textContent   = t.navProfile;
-  document.getElementById('nav-home-label').textContent      = t.navHome;
-  document.getElementById('nav-history-label').textContent   = t.navHistory;
-  document.getElementById('nav-top-label').textContent       = t.navTop;
-  document.getElementById('txt-prof-username').textContent   = t.profUsername;
-  document.getElementById('txt-prof-lang').textContent       = t.profLang;
-  document.getElementById('txt-prof-status').textContent     = t.profStatus;
-  document.getElementById('txt-prof-deals').textContent      = t.profDeals;
-  document.getElementById('btn-requisites-text').textContent = t.btnRequisites;
-  document.getElementById('modal-title-text').textContent  = t.modalTitle;
-  document.getElementById('modal-confirm-btn').textContent = t.modalConfirm;
-  document.getElementById('success-title-text').textContent = t.successTitle;
-  document.getElementById('success-btn-text').textContent   = t.successBtn;
+  const s = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  s('btn-deal',             t.btnDeal);
+  s('btn-support',          t.btnSupport);
+  s('btn-help',             t.btnHelp);
+  s('txt-footer',           t.footer);
+  s('txt-footer-profile',   t.footer);
+  s('nav-profile-label',    t.navProfile);
+  s('nav-home-label',       t.navHome);
+  s('nav-history-label',    t.navHistory);
+  s('nav-top-label',        t.navTop);
+  s('txt-prof-username',    t.profUsername);
+  s('txt-prof-lang',        t.profLang);
+  s('txt-prof-status',      t.profStatus);
+  s('txt-prof-deals',       t.profDeals);
+  s('btn-requisites-text',  t.btnRequisites);
+  s('modal-title-text',     t.modalTitle);
+  s('modal-confirm-btn',    t.modalConfirm);
+  s('success-title-text',   t.successTitle);
+  s('success-btn-text',     t.successBtn);
 }
 
-    applyLang('ru');
+    document.addEventListener('DOMContentLoaded', () => applyLang('ru'));
 
     /* ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ===== */
-   const user = tg.initDataUnsafe?.user || {};
+const user = tg.initDataUnsafe?.user || {};
 const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || '—';
 
-document.getElementById('profileName').textContent  = fullName;
-document.getElementById('profileId').textContent    = user.id || '—';
-document.getElementById('cardUsername').textContent = user.username ? '@' + user.username : '—';
+// Безопасная установка значений — только если элемент существует
+function safeSet(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
 
-// Язык из Telegram
+safeSet('profileName', fullName || '—');
+safeSet('profileId', user.id || '—');
+safeSet('cardUsername', user.username ? '@' + user.username : '—');
+
 const langMap = { ru: '🇷🇺 Русский', en: '🇬🇧 English', uk: '🇺🇦 Українська', es: '🇪🇸 Español' };
-const userLang = user.language_code || 'en';
-document.getElementById('cardLang').textContent = langMap[userLang] || userLang.toUpperCase();
-
-    // Плашка пользователя в шапке
-document.getElementById('pillName').textContent = user.username ? '@' + user.username : (user.first_name || '—');
+const userLang = user.language_code || 'ru';
+safeSet('cardLang', langMap[userLang] || userLang.toUpperCase());
+safeSet('pillName', user.username ? '@' + user.username : (user.first_name || '—'));
 
 const pill = document.getElementById('userPill');
 pill.addEventListener('click', () => {
