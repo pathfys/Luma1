@@ -1313,10 +1313,11 @@ function confirmRequisites() {
     return;
   }
 
-  document.getElementById('reqInputModal').classList.remove('open');
+document.getElementById('reqInputModal').classList.remove('open');
   document.getElementById('reqModal').classList.remove('open');
   document.getElementById('successOverlay').classList.add('open');
   send('add_requisites:' + selectedCurrency + ':' + val);
+}
 
     /* ===== ТЕМА ===== */
     function toggleTheme() {
