@@ -767,6 +767,34 @@ body.light .btn-requisites {
 }
 
 .btn-requisites:active { transform: scale(0.97); opacity: 0.85; }
+
+    /* ===== МОДАЛЬНОЕ ВВОДА РЕКВИЗИТОВ ===== */
+.modal-input-field {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  resize: none;
+}
+
+body.light .modal-input-field {
+  background: rgba(0,0,0,0.04);
+}
+
+.modal-input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.modal-input-field:focus {
+  border-color: rgba(52,152,219,0.6);
+  background: rgba(52,152,219,0.05);
+}
   </style>
 </head>
 <body>
@@ -1092,7 +1120,22 @@ function selectCurrency(el, code) {
 function confirmCurrency() {
   if (!selectedCurrency) return;
   document.getElementById('reqModal').classList.remove('open');
-  send('add_requisites:' + selectedCurrency);
+  // Открываем второе окно ввода
+  document.getElementById('reqInputField').value = '';
+  document.getElementById('reqInputModal').classList.add('open');
+}
+
+function closeReqInputModal(e) {
+  if (e.target === document.getElementById('reqInputModal')) {
+    document.getElementById('reqInputModal').classList.remove('open');
+  }
+}
+
+function confirmRequisites() {
+  const val = document.getElementById('reqInputField').value.trim();
+  if (!val) return;
+  document.getElementById('reqInputModal').classList.remove('open');
+  send('add_requisites:' + selectedCurrency + ':' + val);
 }
 
     /* ===== ТЕМА ===== */
@@ -1229,6 +1272,23 @@ function confirmCurrency() {
     </div>
 
     <button class="modal-confirm" id="modal-confirm-btn" onclick="confirmCurrency()">Подтвердить</button>
+  </div>
+</div>
+
+  <!-- ===== МОДАЛЬНОЕ ВВОДА РЕКВИЗИТОВ ===== -->
+<div class="modal-overlay" id="reqInputModal" onclick="closeReqInputModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Укажите ваши реквизиты</div>
+
+    <textarea
+      class="modal-input-field"
+      id="reqInputField"
+      rows="4"
+      placeholder="Введите реквизиты"
+    ></textarea>
+
+    <button class="modal-confirm" onclick="confirmRequisites()">Подтвердить</button>
   </div>
 </div>
   
