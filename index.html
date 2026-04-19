@@ -738,7 +738,16 @@ body.light .user-pill {
     }
 
     .profile-row .row-label .emoji { font-size: 15px; }
-    .profile-row .row-value { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+    .profile-row .row-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  max-width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
     .btn-requisites {
   width: 100%;
   padding: 15px 20px;
