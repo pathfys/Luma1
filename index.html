@@ -915,12 +915,7 @@ body.light .success-btn {
       <span class="logo-text">Luma</span>
     </div>
 
-<div class="user-pill" id="userPill" onclick="navClick(document.getElementById('navProfile'),'profile')">
-  <div class="user-pill-avatar" id="pillAvatar">👤</div>
-  <span class="user-pill-name" id="pillName">—</span>
-</div>
-    
-    <div class="topbar-right">
+<div class="topbar-right">
       <div class="lang-toggle" id="langToggle">
         <button class="lang-btn" id="langBtn" onclick="toggleLang()">
           <span id="langBtnText">🇷🇺 RU</span>
@@ -932,6 +927,10 @@ body.light .success-btn {
           <button class="lang-option" onclick="selectLang('uk','🇺🇦','UA',this)"><span class="flag">🇺🇦</span> Українська</button>
           <button class="lang-option" onclick="selectLang('es','🇪🇸','ES',this)"><span class="flag">🇪🇸</span> Español</button>
         </div>
+      </div>
+     <div class="user-pill" id="userPill" onclick="navClick(document.getElementById('navProfile'),'profile')">
+        <div class="user-pill-avatar" id="pillAvatar">👤</div>
+        <span class="user-pill-name" id="pillName"></span>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
     </div>
