@@ -363,19 +363,21 @@
 
     /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
     .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0;
-      width: 100%;
-      height: 72px;
-      background: var(--nav-bg);
-      border-top: 1px solid var(--nav-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      z-index: 998;
-      backdrop-filter: blur(12px);
-      transition: background 0.3s;
-    }
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 72px;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  transition: background 0.3s;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
 
     .nav-item {
       display: flex;
@@ -991,8 +993,9 @@ body.light .success-btn {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span id="txt-prof-deals"></span>
   </span>
-  <span class="row-value">—</span>
-  <div class="profile-row">
+ <span class="row-value">—</span>
+</div>
+<div class="profile-row">
   <span class="row-label">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
     <span id="txt-prof-requisite"></span>
