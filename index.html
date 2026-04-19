@@ -1091,6 +1091,8 @@ body.light .success-btn {
         inputTitle:    'Укажите ваши реквизиты',
         successTitle:  'Вы успешно привязали реквизиты!',
         successBtn:    'Продолжить',
+        howToOrder:   '❓ Как создать ордер?',
+        inputConfirm: 'Подтвердить',
       },
       en: {
         welcome:      'Welcome to <b>Luma!</b>',
@@ -1116,6 +1118,8 @@ body.light .success-btn {
         inputTitle:    'Enter your details',
         successTitle:  'Requisites added successfully!',
         successBtn:    'Continue',
+        howToOrder:   '❓ How to create an order?',
+        inputConfirm: 'Confirm',
       },
       uk: {
         welcome:      'Вас вітає <b>Luma!</b>',
@@ -1141,6 +1145,8 @@ body.light .success-btn {
         inputTitle:    'Вкажіть ваші реквізити',
         successTitle:  'Ви успішно прив\'язали реквізити!',
         successBtn:    'Продовжити',
+        howToOrder:   '❓ Як створити ордер?',
+        inputConfirm: 'Підтвердити',
       },
       es: {
         welcome:      '¡Bienvenido a <b>Luma!</b>',
@@ -1166,6 +1172,8 @@ body.light .success-btn {
         inputTitle:    'Ingrese sus datos',
         successTitle:  '¡Requisitos añadidos con éxito!',
         successBtn:    'Continuar',
+        howToOrder:   '❓ ¿Cómo crear una orden?',
+        inputConfirm: 'Confirmar',
       },
     };
 
@@ -1190,6 +1198,12 @@ body.light .success-btn {
   s('modal-confirm-btn',    t.modalConfirm);
   s('success-title-text',   t.successTitle);
   s('success-btn-text',     t.successBtn);
+    const howBtn = document.querySelector('.btn-how');
+if (howBtn) howBtn.textContent = t.howToOrder;
+const inputTitle = document.querySelector('#reqInputModal .modal-title');
+if (inputTitle) inputTitle.textContent = t.inputTitle;
+const inputConfirm = document.querySelector('#reqInputModal .modal-confirm');
+if (inputConfirm) inputConfirm.textContent = t.inputConfirm;
 }
 
     document.addEventListener('DOMContentLoaded', () => applyLang('ru'));
@@ -1256,10 +1270,10 @@ function selectCurrency(el, code) {
 const currencyPlaceholders = {
   ton:  'Введите TON-адрес кошелька',
   rub:  'Введите номер карты РФ (16 цифр)',
-  uah:  'Введите номер карты Украины (16 цифр)',
+  uah:  'Введите номер карты  (16 цифр)',
   usd:  'Введите номер карты США или SWIFT',
   eur:  'Введите IBAN или номер карты ЕС',
-  kzt:  'Введите номер карты Казахстана (16 цифр)',
+  kzt:  'Введите номер карты (16 цифр)',
 };
 
 const currencyValidators = {
@@ -1273,11 +1287,11 @@ const currencyValidators = {
 
 const currencyErrors = {
   ton:  'Введите корректный TON-адрес',
-  rub:  'Введите 16 цифр карты РФ',
-  uah:  'Введите 16 цифр карты Украины',
+  rub:  'Введите 16 цифр карты ',
+  uah:  'Введите 16 цифр карты ',
   usd:  'Введите 16 цифр карты или SWIFT-код',
   eur:  'Введите IBAN или 16 цифр карты',
-  kzt:  'Введите 16 цифр карты Казахстана',
+  kzt:  'Введите 16 цифр карты',
 };
 
 function confirmCurrency() {
