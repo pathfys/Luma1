@@ -816,6 +816,93 @@ body.light .modal-input-field {
   border-color: rgba(52,152,219,0.6);
   background: rgba(52,152,219,0.05);
 }
+
+    /* ===== ЭКРАН УСПЕХА ===== */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.success-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.success-card {
+  width: calc(100% - 48px);
+  max-width: 320px;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 36px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transform: scale(0.88);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.success-overlay.open .success-card {
+  transform: scale(1);
+}
+
+.success-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #2ecc71;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(46,204,113,0.5);
+  animation: successPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes successPop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.success-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #ffffff;
+  color: #0d0d0d;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s, background 0.2s, color 0.2s;
+}
+
+body.light .success-btn {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.success-btn:active { transform: scale(0.97); opacity: 0.85; }
+    
   </style>
 </head>
 <body>
@@ -999,6 +1086,11 @@ body.light .modal-input-field {
         profStatus:   'Статус',
         profDeals:    'Сделок',
         btnRequisites: 'Добавить реквизиты',
+        modalTitle:    'Выберите реквизиты для получения:',
+        modalConfirm:  'Подтвердить',
+        inputTitle:    'Укажите ваши реквизиты',
+        successTitle:  'Вы успешно привязали реквизиты!',
+        successBtn:    'Продолжить',
       },
       en: {
         welcome:      'Welcome to <b>Luma!</b>',
@@ -1019,6 +1111,11 @@ body.light .modal-input-field {
         profStatus:   'Status',
         profDeals:    'Deals',
         btnRequisites: 'Add requisites',
+        modalTitle:    'Select payment method:',
+        modalConfirm:  'Confirm',
+        inputTitle:    'Enter your details',
+        successTitle:  'Requisites added successfully!',
+        successBtn:    'Continue',
       },
       uk: {
         welcome:      'Вас вітає <b>Luma!</b>',
@@ -1039,6 +1136,11 @@ body.light .modal-input-field {
         profStatus:   'Статус',
         profDeals:    'Угод',
         btnRequisites: 'Додати реквізити',
+        modalTitle:    'Оберіть реквізити для отримання:',
+        modalConfirm:  'Підтвердити',
+        inputTitle:    'Вкажіть ваші реквізити',
+        successTitle:  'Ви успішно прив\'язали реквізити!',
+        successBtn:    'Продовжити',
       },
       es: {
         welcome:      '¡Bienvenido a <b>Luma!</b>',
@@ -1059,6 +1161,11 @@ body.light .modal-input-field {
         profStatus:   'Estado',
         profDeals:    'Tratos',
         btnRequisites: 'Agregar requisitos',
+        modalTitle:    'Seleccione método de pago:',
+        modalConfirm:  'Confirmar',
+        inputTitle:    'Ingrese sus datos',
+        successTitle:  '¡Requisitos añadidos con éxito!',
+        successBtn:    'Continuar',
       },
     };
 
@@ -1078,6 +1185,10 @@ body.light .modal-input-field {
   document.getElementById('txt-prof-status').textContent     = t.profStatus;
   document.getElementById('txt-prof-deals').textContent      = t.profDeals;
   document.getElementById('btn-requisites-text').textContent = t.btnRequisites;
+  document.getElementById('modal-title-text').textContent  = t.modalTitle;
+  document.getElementById('modal-confirm-btn').textContent = t.modalConfirm;
+  document.getElementById('success-title-text').textContent = t.successTitle;
+  document.getElementById('success-btn-text').textContent   = t.successBtn;
 }
 
     applyLang('ru');
@@ -1203,8 +1314,9 @@ function confirmRequisites() {
   }
 
   document.getElementById('reqInputModal').classList.remove('open');
+  document.getElementById('reqModal').classList.remove('open');
+  document.getElementById('successOverlay').classList.add('open');
   send('add_requisites:' + selectedCurrency + ':' + val);
-}
 
     /* ===== ТЕМА ===== */
     function toggleTheme() {
@@ -1268,6 +1380,10 @@ function confirmRequisites() {
         send(action);
       }
     }
+  
+  function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('open');
+}
 
     function send(action) {
       tg.sendData(JSON.stringify({ action }));
@@ -1354,6 +1470,19 @@ function confirmRequisites() {
       placeholder="Введите реквизиты"
     />
     <button class="modal-confirm" onclick="confirmRequisites()">Подтвердить</button>
+  </div>
+</div>
+
+  <!-- ===== ЭКРАН УСПЕХА ===== -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-circle">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <div class="success-title" id="success-title-text">Вы успешно привязали реквизиты!</div>
+    <button class="success-btn" id="success-btn-text" onclick="closeSuccess()">Продолжить</button>
   </div>
 </div>
   
