@@ -1508,7 +1508,8 @@ function confirmEditCurrency() {
   input.placeholder = currencyPlaceholders[selectedEditCurrency] || 'Введите реквизиты';
   const old = document.getElementById('req-error');
   if (old) old.remove();
-  // Флаг что это редактирование
+  // Перезаписываем selectedCurrency чтобы валидация работала правильно
+  selectedCurrency = selectedEditCurrency;
   window._editMode = true;
   document.getElementById('reqInputModal').classList.add('open');
 }
