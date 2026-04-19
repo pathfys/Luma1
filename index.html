@@ -1138,11 +1138,42 @@ function selectCurrency(el, code) {
   selectedCurrency = code;
 }
 
+const currencyPlaceholders = {
+  ton:  'Введите TON-адрес кошелька',
+  rub:  'Введите номер карты РФ (16 цифр)',
+  uah:  'Введите номер карты Украины (16 цифр)',
+  usd:  'Введите номер карты США или SWIFT',
+  eur:  'Введите IBAN или номер карты ЕС',
+  kzt:  'Введите номер карты Казахстана (16 цифр)',
+};
+
+const currencyValidators = {
+  ton:  (v) => /^[UE][Qq]?[0-9A-Za-z\-_]{46,48}$/.test(v.trim()),
+  rub:  (v) => /^\d{16}$/.test(v.replace(/\s/g,'')),
+  uah:  (v) => /^\d{16}$/.test(v.replace(/\s/g,'')),
+  usd:  (v) => /^\d{16}$/.test(v.replace(/\s/g,'')) || /^[A-Z]{6,8}$/.test(v.trim()),
+  eur:  (v) => /^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/.test(v.replace(/\s/g,'')) || /^\d{16}$/.test(v.replace(/\s/g,'')),
+  kzt:  (v) => /^\d{16}$/.test(v.replace(/\s/g,'')),
+};
+
+const currencyErrors = {
+  ton:  'Введите корректный TON-адрес',
+  rub:  'Введите 16 цифр карты РФ',
+  uah:  'Введите 16 цифр карты Украины',
+  usd:  'Введите 16 цифр карты или SWIFT-код',
+  eur:  'Введите IBAN или 16 цифр карты',
+  kzt:  'Введите 16 цифр карты Казахстана',
+};
+
 function confirmCurrency() {
   if (!selectedCurrency) return;
   document.getElementById('reqModal').classList.remove('open');
-  // Открываем второе окно ввода
-  document.getElementById('reqInputField').value = '';
+  const input = document.getElementById('reqInputField');
+  input.value = '';
+  input.placeholder = currencyPlaceholders[selectedCurrency] || 'Введите реквизиты';
+  // Убираем старую ошибку если была
+  const old = document.getElementById('req-error');
+  if (old) old.remove();
   document.getElementById('reqInputModal').classList.add('open');
 }
 
@@ -1155,6 +1186,22 @@ function closeReqInputModal(e) {
 function confirmRequisites() {
   const val = document.getElementById('reqInputField').value.trim();
   if (!val) return;
+
+  // Удаляем старую ошибку
+  const old = document.getElementById('req-error');
+  if (old) old.remove();
+
+  // Валидация
+  const validator = currencyValidators[selectedCurrency];
+  if (validator && !validator(val)) {
+    const err = document.createElement('div');
+    err.id = 'req-error';
+    err.style.cssText = 'color:#e74c3c;font-size:12px;text-align:center;margin-top:-8px;';
+    err.textContent = currencyErrors[selectedCurrency];
+    document.getElementById('reqInputField').insertAdjacentElement('afterend', err);
+    return;
+  }
+
   document.getElementById('reqInputModal').classList.remove('open');
   send('add_requisites:' + selectedCurrency + ':' + val);
 }
